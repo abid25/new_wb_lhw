@@ -66,7 +66,6 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		last_record = self.order("meta_submission_date").last
 				
 		last_record = self.order("meta_submission_date").last
-
 		if last_record.nil?
 			puts  "nil record case got run"
 			new_records = child_health_google_table.select "*", "ORDER BY '*meta-submission-date*' ASC"
@@ -84,14 +83,11 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		fail_location = 0 
 		fail_sim = 0
 		duplicate_fail = 0
-		records_to_insert=50
 		puts  "records caught:" + new_records.count.to_s
 		#tried using describe to auto-do it but too much hassle. easier to do it explicitly
+
 		for record in new_records 			
 			begin
-				if records_to_insert==0
-					break
-				end
 
 				location = record["location".to_sym]
 				unless location.nil?
@@ -100,14 +96,11 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 					locations = location.split(",")
 				end
 
-				if locations.count!=3
-					fail_location = fail_location + 1
-				end
 				if record["simid".downcase.to_sym].blank?
 					fail_sim = fail_sim + 1
 				end
-				
-				unless locations.count!=3 or record["simid".downcase.to_sym].blank?
+
+				unless record["simid".downcase.to_sym].blank?
 					new_child_health = self.new(
 						:meta_instance_id=>record[fields[0][:name].downcase.to_sym],
 						:meta_model_version=>record[fields[1][:name].downcase.to_sym],			
@@ -149,9 +142,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 					unless new_child_health.photo_url.nil?
 						new_child_health.update_attribute(:photo,open(new_child_health.photo_url))
 					end
-				
 					success_count = success_count + 1
-					records_to_insert = records_to_insert -1
 				end
 			rescue ActiveRecord::RecordNotUnique # we check for duplicates by defining a unique index on device_id and end_time and let the db handle it
 				duplicate_fail = duplicate_fail + 1

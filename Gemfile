@@ -24,6 +24,7 @@ gem "friendly_id"
 gem "jquery-datatables-rails", :git => 'git://github.com/kclair/jquery-datatables-rails.git' 
 gem 'gmaps4rails'
 gem 'gon'
+gem 'psych'
 gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 gem "eventmachine"
 gem "rb-readline"

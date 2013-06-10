@@ -52,8 +52,6 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		#	puts table.name
 		#end
 
-
-
 		last_record = self.order("meta_submission_date").last
 		
 		if last_record.nil?
@@ -76,12 +74,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		records_to_insert=50
 		puts  "records caught:" + new_records.count.to_s
 		#tried using describe to auto-do it but too much hassle. easier to do it explicitly
+		
 		for record in new_records 			
 			begin
-				if records_to_insert==0
-					break
-				end
-
 				location = record["location".to_sym]
 				unless location.nil?
 					location.slice!("</coordinates></Point>")
@@ -89,14 +84,11 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 					locations = location.split(",")
 				end
 
-				if locations.count!=3
-					fail_location = fail_location + 1
-				end
 				if record["simid".downcase.to_sym].blank?
 					fail_sim = fail_sim + 1
 				end
 				
-				unless locations.count!=3 or record["simid".downcase.to_sym].blank?
+				unless record["simid".downcase.to_sym].blank?
 					new_special_task = self.new(
 						:meta_instance_id=>record[fields[0][:name].downcase.to_sym],
 						:meta_model_version=>record[fields[1][:name].downcase.to_sym],			
@@ -128,9 +120,8 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 					unless new_special_task.photo_url.nil?
 						new_special_task.update_attribute(:photo,open(new_special_task.photo_url))
 					end
-				
+
 					success_count = success_count + 1
-					records_to_insert = records_to_insert -1
 				end
 			rescue ActiveRecord::RecordNotUnique # we check for duplicates by defining a unique index on device_id and end_time and let the db handle it
 				duplicate_fail = duplicate_fail + 1
