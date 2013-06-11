@@ -19,29 +19,31 @@
 function color_legend() 
 {
 	return '<table>' +
-			'<tr class="fail"><td>0-20%</td><td>Poor Performance</td></tr>' +
-			'<tr class="warning"><td>20-60%</td><td>Below Average Performance</td></tr>' +
-			'<tr class="pass"><td>60-80%</td><td>Above Average Performance </td></tr>' +
-			'<tr class="exceptional"><td>80-100%</td><td>Exceptional Performance</td></tr>' +
-		'</table>';
+	'<tr class="fail"><td>0-20%</td><td>Poor Performance</td></tr>' +
+	'<tr class="warning"><td>20-60%</td><td>Below Average Performance</td></tr>' +
+	'<tr class="pass"><td>60-80%</td><td>Above Average Performance </td></tr>' +
+	'<tr class="exceptional"><td>80-100%</td><td>Exceptional Performance</td></tr>' +
+	'</table>';
 }
 
 $('#time_filter_start_time_2i').live('change', function() 
 {
-  $(this).parents('form:first').submit();
+	console.log("testing2i")
+	$(this).parents('form:first').submit();
 });
 
 $('#time_filter_start_time_1i').live('change', function() 
 {
-  $(this).parents('form:first').submit();
+	console.log("testing1i")
+	$(this).parents('form:first').submit();
 });
 
 $("*[data-spinner]").live('ajax:beforeSend', function(e){
-  $($(this).data('spinner')).show();
+	$($(this).data('spinner')).show();
   e.stopPropagation(); //Don't show spinner of parent elements.
 });
 $("*[data-spinner]").live('ajax:complete', function(){
-  $($(this).data('spinner')).hide();
+	$($(this).data('spinner')).hide();
 });
 
 function apply_compliance_datatable()
@@ -64,20 +66,20 @@ function apply_compliance_datatable()
 		//"bLengthChange": false,
 		//"bPaginate": false,
 		"fnDrawCallback": function() {
-						$('.dataTables_paginate').css("display", "block");  
-						$('.dataTables_length').css("display", "block");
-						$('.dataTables_filter').css("display", "block");                        
-				}
+			$('.dataTables_paginate').css("display", "block");  
+			$('.dataTables_length').css("display", "block");
+			$('.dataTables_filter').css("display", "block");                        
+		}
 		
 	} );
 	register_details_field_click_event('compliance_dtable',oTable);
 }
-	
+
 function indicator_script()
 {
 
 	$('a.dropdown-toggle').dropdown(); //little fix to let dropdowns work with single clicks
-		
+
 	preloading_functions[current_visualization_type]();
 	loading_functions[current_visualization_type][current_visualization]();
 
@@ -105,36 +107,36 @@ function indicator_script()
 		$("#activity_type").html($(this).data("activity_name"));
 		$("#activity_selector").html($(this).html()+" <span class=\"caret\"></span>");
 	});
-	
-	$(document).on("click", ".indicator-toggle", function()
-	{ 
-		current_visualization = $(this).data("indicator");
-		loading_functions[current_visualization_type][current_visualization]();
-		$("#indicator_type").html($(this).data("indicator_name"));
-		$("#indicator_selector").html($(this).html()+" <span class=\"caret\"></span>");
-	});
 
-	$(".visualization-toggle").click(function () 
-	{
-		current_visualization_type = $(this).data("visualization");
-		preloading_functions[current_visualization_type]();
-		loading_functions[current_visualization_type][current_visualization]();
-		$("#visualization_type").html($(this).data("visualization"));
-		$("#visualization_selector").html($(this).html()+" <span class=\"caret\"></span>");
-	});
-	
+$(document).on("click", ".indicator-toggle", function()
+{ 
+	current_visualization = $(this).data("indicator");
+	loading_functions[current_visualization_type][current_visualization]();
+	$("#indicator_type").html($(this).data("indicator_name"));
+	$("#indicator_selector").html($(this).html()+" <span class=\"caret\"></span>");
+});
+
+$(".visualization-toggle").click(function () 
+{
+	current_visualization_type = $(this).data("visualization");
+	preloading_functions[current_visualization_type]();
+	loading_functions[current_visualization_type][current_visualization]();
+	$("#visualization_type").html($(this).data("visualization"));
+	$("#visualization_selector").html($(this).html()+" <span class=\"caret\"></span>");
+});
+
 }
 
 function apply_indicators_datatable()
 {
 	var oTable = $("table#indicators_dtable").dataTable
 	( {
-	"oTableTools": {
+		"oTableTools": {
 			"sSwfPath": gon.flash_path,
 			"aButtons": [
-				"copy",
-				"csv",
-				"xls"
+			"copy",
+			"csv",
+			"xls"
 			]
 		},
 		"sDom": 'T<"clear">lfrtip',
@@ -154,9 +156,9 @@ function apply_indicators_datatable()
 		
 	} );
 	new FixedColumns( oTable, {
- 		"iLeftColumns": 1,
+		"iLeftColumns": 1,
 		"iLeftWidth": 150
- 	} );
+	} );
 }
 
 $(document).ready(function() {

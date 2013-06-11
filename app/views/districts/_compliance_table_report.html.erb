@@ -1,0 +1,58 @@
+<%= simple_form_for :time_filter, remote: true, url: filter_for_compliance_table_district_path, :html => {:"data-spinner" => "#time_filter_spinner"} do |f| %>
+<div class="inputs">
+  <div class="row">
+    <div class="span4">
+      <%= f.input :start_time, :label => false, :as => :date, :start_year => 2011, :end_year => Date.today.year, :discard_day => true,
+      :order => [:month, :year], :default => @start_time, :input_html => { :class => "span2" } %> 
+    </div>
+  </div>
+</div>
+<% end %>
+
+<table cellpadding="0" cellspacing="0" border="1" class="table" id="district_compliance_table">
+  <thead>
+    <tr>
+      <th colspan="2"> <center> Visitors </center> </th>
+      <th colspan="6"> <center> Monitoring Forms </center> </th>
+      <th colspan="2"> <center>Visits Performed </center></th>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <th>No. of Lhws</th>
+      <th>ChildHealth</th>
+      <th>HealthHouse</th>
+      <th>Maternal</th>
+      <th>SupportGroupMeeting</th>
+      <th>FamilyPlanning</th>
+      <th>SpecialTask</th>
+      <th>Total</th>
+      <th>Compliance</th>
+    </tr> 
+  </thead>
+
+  <% @district.visitors.each do |v| %>
+    <tr>
+
+      <td> <center> <%= link_to v.name, compliance_report_user_path(v) %> </center> </td>
+      <td> <center> <%= v.lhw_details.count %> </center> </td>
+
+      <% if @time_filter.blank? %>
+        <% ['ChildHealth', 'HealthHouse', 'Maternal', 'SupportGroupMeeting', 'FpClient', 'SpecialTask'].each do |type| %>
+          <td> <center> <%= v.phone_entries.where(type: type, meta_submission_date: Date.today.beginning_of_month..Date.today.end_of_month).count %>
+           </center> </td>
+        <% end %>
+
+        <td> <center> <%= v.total_form_submitted_used_for_compliance(Date.today.beginning_of_month) %> </center> </td>
+        <td> <center> <%= v.total_compliance(Date.today.beginning_of_month) %> </center> </td>
+      <% else %>
+        <% ['ChildHealth', 'HealthHouse', 'Maternal', 'SupportGroupMeeting', 'FpClient', 'SpecialTask'].each do |type| %>
+          <td> <center> <%= v.phone_entries.where(type: type, meta_submission_date: @time_filter..@time_filter.end_of_month).count %>
+           </center> </td>
+        <% end %>
+
+        <td> <center> <%= v.total_form_submitted_used_for_compliance(@time_filter) %> </center> </td>
+        <td> <center> <%= v.total_compliance(@time_filter) %> </center> </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

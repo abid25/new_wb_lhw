@@ -18,9 +18,22 @@ class Visitor < ActiveRecord::Base
 	has_many :assessments, :primary_key => :device_id, :foreign_key => :device_id 
 	has_many :mentorings, :primary_key => :device_id, :foreign_key => :device_id 
 	has_many :phone_entries, :primary_key => :device_id, :foreign_key => :device_id 
+	has_many :lhw_details, primary_key: :lhs_code, foreign_key: :lhs_code, conditions: ' lhs_code != "" '
+
 	scope :submits_reports, where("designation NOT IN (?)", ["FPO"])	
 	belongs_to :district
-		
+
+	NOT_USED_IN_COMPLIANCE = ['Newborn', 'ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
+
+	def total_compliance(time_filter)
+		return 0 if lhw_details.count == 0
+		'%.2f' % (total_form_submitted_used_for_compliance(time_filter)/(lhw_details.count*5).to_f)
+	end
+
+	def total_form_submitted_used_for_compliance(time_filter)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, meta_submission_date: time_filter..time_filter.end_of_month).count
+	end
+
 	def assessments_required(number_of_months)
 		self.units_assigned*number_of_months
 	end
@@ -47,7 +60,7 @@ class Visitor < ActiveRecord::Base
 		self.total_percentage = self.total_conducted.each_with_object({}) {|(k, v), h| h[k] = v > self.total_expected ? 100 : ((v.to_f/self.total_expected.to_f)*100).round(1) } 
 	end
 	
-		
+
 	def indicator_statistics(end_time, activities)
 		self.statistics = Hash.new
 		
