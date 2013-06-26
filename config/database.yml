@@ -20,6 +20,7 @@ production:
   database: lhw_production
   password: lhwict1234
   host: 127.0.0.1
+  socket: /var/lib/mysql/mysql.sock
 
 test:
   <<: *defaults
