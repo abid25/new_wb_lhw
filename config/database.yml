@@ -15,8 +15,11 @@ development:
   
   
 production:
-  <<: *defaults
+  adapter: mysql2
+  username: root
   database: lhw_production
+  password: lhwict1234
+  host: localhost
 
 test:
   <<: *defaults
