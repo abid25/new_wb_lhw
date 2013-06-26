@@ -44,7 +44,6 @@ end
 
 group :development do
   gem 'pry'
-  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 end
 
 gem 'jquery-rails'
