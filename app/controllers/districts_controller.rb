@@ -4,7 +4,6 @@ class DistrictsController < ApplicationController
 # Doing CanCan calls by hand cause new to this and this a fairly complex usecase
 
 def compliance_report
-	binding.pry
 	if params[:time_filter].nil?
 		@district = District.find(params[:id])
 		@start_time = Time.now.prev_month.beginning_of_month
@@ -138,7 +137,5 @@ def compliance_report
 			@start_time  = Time.zone.parse(params[:time_filter]["start_time(3i)"]+"-"+params[:time_filter]["start_time(2i)"]+"-"+params[:time_filter]["start_time(1i)"])
 			@end_time    = @start_time.end_of_month
 		end
-
-		binding.pry
 	end
 end

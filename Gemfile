@@ -25,8 +25,9 @@ gem "jquery-datatables-rails", :git => 'git://github.com/kclair/jquery-datatable
 gem 'gmaps4rails'
 gem 'gon'
 gem 'psych'
+gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 gem "eventmachine"
-gem "rb-readline"
+gem 'rb-readline', '~> 0.4.2'
 #gem 'client_side_validations', :git => 'git://github.com/bcardarella/client_side_validations.git'
 #gem 'client_side_validations-simple_form', :git => 'git://github.com/dockyard/client_side_validations-simple_form.git'
 
@@ -43,8 +44,8 @@ group :assets do
 end
 
 group :development do
+  gem 'pry-rails'
   gem 'pry'
-  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 end
 
 gem 'jquery-rails'

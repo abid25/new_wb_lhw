@@ -12,14 +12,13 @@ defaults: &defaults
 development:
   <<: *defaults
   database: lhw_development
-  
-  
+    
 production:
   adapter: mysql2
   username: root
   database: lhw_production
   password: lhwict1234
-  host: 127.0.0.1
+  host: localhost
   socket: /var/lib/mysql/mysql.sock
 
 test:

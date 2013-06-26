@@ -111,6 +111,8 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.4)
+    pry-rails (0.3.1)
+      pry (>= 0.9.10)
     psych (1.3.4)
     rack (1.4.5)
     rack-cache (1.2)
@@ -135,7 +137,7 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (10.1.0)
-    rb-readline (0.5.0)
+    rb-readline (0.4.2)
     rdoc (3.12.2)
       json (~> 1.4)
     rufus-scheduler (2.0.19)
@@ -196,9 +198,10 @@ DEPENDENCIES
   mysql2
   paperclip (~> 2.7.0)
   pry
+  pry-rails
   psych
   rails (= 3.2.0)
-  rb-readline
+  rb-readline (~> 0.4.2)
   rufus-scheduler
   sass-rails (~> 3.2.3)
   simple_form (>= 2.0)

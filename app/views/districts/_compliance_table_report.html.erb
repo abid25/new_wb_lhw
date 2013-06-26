@@ -18,7 +18,6 @@
       <th>Compliance</th>
     </tr> 
   </thead>
-  <% binding.pry %>
   <% @district.visitors.each do |v| %>
     <tr>
       <td> <center> <%= link_to v.name, compliance_report_user_path(v) %> </center> </td>
