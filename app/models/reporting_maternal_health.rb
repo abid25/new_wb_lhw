@@ -89,9 +89,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if locations.count!=3

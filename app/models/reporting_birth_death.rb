@@ -46,6 +46,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing reporting_birth_death on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
+		ft.set_api_key(Yetting.api_key)
 
 		reporting_birth_death_google_table = ft.show_tables[ft.show_tables.index{|x|x.name=="Reporting - Births and Deaths"}]
 
@@ -79,9 +80,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if locations.count!=3

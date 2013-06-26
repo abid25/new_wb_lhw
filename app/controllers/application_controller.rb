@@ -69,21 +69,21 @@ class ApplicationController < ActionController::Base
   end
   
   def define_activity_legend
-	gon.markers = []
-	for activity in PhoneEntry.activities
-		gon.markers.append(view_context.image_path(activity.name.to_s+".png"))
-	end
+	  gon.markers = []
+  	for activity in PhoneEntry.activities
+  		gon.markers.append(view_context.image_path(activity.name.to_s+".png"))
+  	end
   end
   
   def define_school_legend
-	gon.default_marker = view_context.image_path("phones-default.png")
-	gon.school_marker = view_context.image_path("university.png")
-	gon.ctsc_marker = view_context.image_path("star-yellow.png")
+  	gon.default_marker = view_context.image_path("phones-default.png")
+  	gon.school_marker  = view_context.image_path("university.png")
+  	gon.ctsc_marker    = view_context.image_path("star-yellow.png")
   end
   
   def define_details_images
-	gon.details_open = view_context.image_path("details_open.png")
-	gon.details_close = view_context.image_path("details_close.png")
+  	gon.details_open  = view_context.image_path("details_open.png")
+  	gon.details_close = view_context.image_path("details_close.png")
   end
   
 

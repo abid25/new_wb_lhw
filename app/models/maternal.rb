@@ -46,6 +46,8 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing maternal on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
+		ft.set_api_key(Yetting.api_key)
+
 
 		#maternal_google_table = ft.show_tables[11]
 		#puts maternal_google_table.inspect
@@ -83,9 +85,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 			begin
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?
@@ -107,23 +107,22 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:end_time=>record[fields[10][:name].downcase.to_sym].tr("T"," "),			
 						:photo_url=>record["photo".to_sym],						
 						:location_x=>locations[0],			
-						:location_y=>locations[1],			
-						:location_z=>locations[2],			
+						:location_y=>locations[1],
 						:location_accuracy=>record["location:Accuracy".downcase.to_sym]			
 					)
 					new_maternal.build_detail(
 						:lhw_code=> record[fields[11][:name].downcase.to_sym],
 						:name=> record[fields[12][:name].downcase.to_sym],
-						:expected_date=>record[fields[13][:name].downcase.to_sym] ? DateTime.strptime(record[fields[13][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:expected_date=>record[fields[13][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[13][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
 						:iron_intake=> record[fields[14][:name].downcase.to_sym],
 						:tt_vaccination_count=> record[fields[15][:name].downcase.to_sym],
-						:tt_vaccination_date1=>record[fields[16][:name].downcase.to_sym] ? DateTime.strptime(record[fields[16][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:tt_vaccination_date2=>record[fields[17][:name].downcase.to_sym] ? DateTime.strptime(record[fields[17][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:tt_vaccination_date1=>record[fields[16][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[16][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:tt_vaccination_date2=>record[fields[17][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[17][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
 						:anc_count=> record[fields[18][:name].downcase.to_sym],
-						:anc_date1=>record[fields[19][:name].downcase.to_sym] ? DateTime.strptime(record[fields[19][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:anc_date2=>record[fields[20][:name].downcase.to_sym] ? DateTime.strptime(record[fields[20][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:anc_date3=>record[fields[21][:name].downcase.to_sym] ? DateTime.strptime(record[fields[21][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:anc_date4=>record[fields[22][:name].downcase.to_sym] ? DateTime.strptime(record[fields[22][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil
+						:anc_date1=>record[fields[19][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[19][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:anc_date2=>record[fields[20][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[20][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:anc_date3=>record[fields[21][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[21][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:anc_date4=>record[fields[22][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[22][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil
 								
 					)
 	

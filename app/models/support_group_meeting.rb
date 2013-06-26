@@ -1,4 +1,5 @@
 
+
 require 'open-uri'
 require 'openssl'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE #otherwise it messes up looking for SSL certificate
@@ -47,6 +48,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		ft = GData::Client::FusionTables.new 
 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)	
+		ft.set_api_key(Yetting.api_key)
 		#support_group_meeting_google_table = ft.show_tables[13]
 		#puts support_group_meeting_google_table.inspect
 		#for table in ft.show_tables
@@ -82,12 +84,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		#tried using describe to auto-do it but too much hassle. easier to do it explicitly
 		for record in new_records 			
 			begin
-
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?

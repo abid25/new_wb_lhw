@@ -1,7 +1,7 @@
 defaults: &defaults
   fusion_account: "lhwict@gmail.com"
   fusion_password: "worldbank"
-  
+  api_key:         "AIzaSyDs3NTqUMKB3qTxpTKHP-lW-hmt-dMbio0"
 development:
   <<: *defaults
 

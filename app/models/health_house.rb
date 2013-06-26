@@ -48,9 +48,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 		#ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
 		#health_house_google_table = ft.show_tables[13]
-		
-
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)
+		ft.set_api_key(Yetting.api_key)
+		
 		health_house_google_table = ft.show_tables[ft.show_tables.index{|x|x.name=="Monitoring - Health House"}]
 
 		last_record = self.order("meta_submission_date").last
@@ -79,9 +79,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?
@@ -103,8 +101,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:end_time=>record[fields[10][:name].downcase.to_sym].tr("T"," "),			
 						:photo_url=>record["photo".to_sym],						
 						:location_x=>locations[0],			
-						:location_y=>locations[1],			
-						:location_z=>locations[2],			
+						:location_y=>locations[1],
 						:location_accuracy=>record["location:Accuracy".downcase.to_sym]			
 					)
 					new_health_house.build_detail(

@@ -45,7 +45,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing reporting_treatment on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
-
+		ft.set_api_key(Yetting.api_key)
 		#reporting_treatment_google_table = ft.show_tables[7]
 
 		
@@ -86,9 +86,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if locations.count!=3
@@ -113,8 +111,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:end_time=>record[fields[10][:name].downcase.to_sym].tr("T"," "),			
 						#:photo_url=>record["photo".to_sym],						
 						:location_x=>locations[0],			
-						:location_y=>locations[1],			
-						:location_z=>locations[2],			
+						:location_y=>locations[1],
 						:location_accuracy=>record["location:Accuracy".downcase.to_sym]			
 					)
 					

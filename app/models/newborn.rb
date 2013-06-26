@@ -44,6 +44,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing newborn on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
+		ft.set_api_key(Yetting.api_key)
 		newborn_google_table = ft.show_tables[ft.show_tables.index{|x|x.name=="Monitoring - Newborn"}]
 		
 		last_record = self.order("meta_submission_date").last
@@ -69,12 +70,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		#tried using describe to auto-do it but too much hassle. easier to do it explicitly
 		for record in new_records 			
 			begin
-
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?
@@ -100,12 +98,13 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:location_z=>locations[2],			
 						:location_accuracy=>record["location:Accuracy".downcase.to_sym]			
 					)
+
 					new_newborn.build_detail(
 						:lhw_code => record[fields[11][:name].downcase.to_sym],
 						:name => record[fields[12][:name].downcase.to_sym],
 						:mobile_number => record[fields[13][:name].downcase.to_sym],
-						:date_of_birth =>record[fields[14][:name].downcase.to_sym] ? DateTime.strptime(record[fields[14][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:date_of_visit =>record[fields[15][:name].downcase.to_sym] ? DateTime.strptime(record[fields[15][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:date_of_birth =>record[fields[14][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[14][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:date_of_visit =>record[fields[15][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[15][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
 						:anti_natal_care => record[fields[16][:name].downcase.to_sym],
 						:tt_vaccination => record[fields[17][:name].downcase.to_sym],
 						:birth_attendant => record[fields[18][:name].downcase.to_sym],
@@ -114,9 +113,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:weight_of_newborn => record[fields[21][:name].downcase.to_sym],
 						:breast_feeding => record[fields[22][:name].downcase.to_sym],
 						:bcg_given => record[fields[23][:name].downcase.to_sym],
-						:bcg_date =>record[fields[24][:name].downcase.to_sym] ? DateTime.strptime(record[fields[24][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:bcg_date =>record[fields[24][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[24][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
 						:polio_status => record[fields[25][:name].downcase.to_sym],
-						:polio_date =>record[fields[26][:name].downcase.to_sym] ? DateTime.strptime(record[fields[26][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:polio_date =>record[fields[26][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[26][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
 						:photo_url => record[fields[27][:name].downcase.to_sym]
 					)
 

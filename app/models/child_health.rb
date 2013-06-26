@@ -45,7 +45,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing child_health on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
-
+		ft.set_api_key(Yetting.api_key)
 
 		#child_health_google_table = ft.show_tables[0]		
 
@@ -60,18 +60,14 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 		child_health_google_table = ft.show_tables[ft.show_tables.index{|x|x.name=="Monitoring - Child Health"}]	
 
-			
-
 		
 		last_record = self.order("meta_submission_date").last
 				
-		last_record = self.order("meta_submission_date").last
 		if last_record.nil?
 			puts  "nil record case got run"
 			new_records = child_health_google_table.select "*", "ORDER BY '*meta-submission-date*' ASC"
 		else
 			#we have to assign to because .slice must be the only string method to return the deleted string for some dumb reason...
-			last_record = self.order("meta_submission_date").last
 			search_after = last_record.meta_submission_date.in_time_zone('UTC').strftime("%m/%d/%Y %H:%M:%S")
 			search_after.slice!(" UTC")
 			puts  "search after: " + search_after.to_s
@@ -88,12 +84,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 
 		for record in new_records 			
 			begin
-
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?
@@ -116,9 +109,9 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:photo_url=>record["photo".to_sym],						
 						:location_x=>locations[0],			
 						:location_y=>locations[1],			
-						:location_z=>locations[2],			
 						:location_accuracy=>record["location:Accuracy".downcase.to_sym]			
 					)
+			
 					new_child_health.build_detail(
 						:lhw_code => record[fields[11][:name].downcase.to_sym],
 						:name_of_child => record[fields[12][:name].downcase.to_sym],
@@ -126,12 +119,12 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 						:mid_upper_arm_circumference => record[fields[14][:name].downcase.to_sym],
 						:weight => record[fields[15][:name].downcase.to_sym],
 						:epi_status => record[fields[16][:name].downcase.to_sym],
-						:epi_polio_bcg => record[fields[17][:name].downcase.to_sym] ? DateTime.strptime(record[fields[17][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:penta1_polio =>record[fields[18][:name].downcase.to_sym] ? DateTime.strptime(record[fields[18][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:penta2_polio =>record[fields[19][:name].downcase.to_sym] ? DateTime.strptime(record[fields[19][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:penta3_polio =>record[fields[20][:name].downcase.to_sym]? DateTime.strptime(record[fields[20][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:measles1 =>record[fields[21][:name].downcase.to_sym] ? DateTime.strptime(record[fields[21][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
-						:measles2 =>record[fields[22][:name].downcase.to_sym] ? DateTime.strptime(record[fields[22][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil
+						:epi_polio_bcg => record[fields[17][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[17][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:penta1_polio =>record[fields[18][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[18][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:penta2_polio =>record[fields[19][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[19][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:penta3_polio =>record[fields[20][:name].downcase.to_sym].present? ? DateTime.strptime(record[fields[20][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:measles1 =>record[fields[21][:name].downcase.to_sym].present?    ? DateTime.strptime(record[fields[21][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil,
+						:measles2 =>record[fields[22][:name].downcase.to_sym].present?   ? DateTime.strptime(record[fields[22][:name].downcase.to_sym], "%m/%d/%Y ").to_date : nil
 					)
 
 					new_child_health.save!

@@ -21,7 +21,7 @@ Lhw::Application.routes.draw do
 
 	resources :health_facilities do
 		member do
-			get 'indicators_report'
+			get  'indicators_report'
 			post 'indicators_report'
 		end
 	end
@@ -29,14 +29,14 @@ Lhw::Application.routes.draw do
 	
 	resources :districts do # remember folks if you miss the s in resources, great things happen like params being appended with . instead of /
 		member do
-      get  'compliance_table'
-			get 'compliance_report'
-			post 'compliance_report'
-			get 'indicators_report'
-			post 'indicators_report'
-			get 'indicators_report_by_people'
-			post 'indicators_report_by_people'
-		  get  'compliance_table'
+			get  :compliance_report
+			post :compliance_report
+			get  :indicators_report
+			post :indicators_report
+			get  :indicators_report_by_people
+			post :indicators_report_by_people
+		  get  :compliance_table
+      post :compliance_table
       post :filter_for_compliance_table
     end
 	end

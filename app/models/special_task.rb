@@ -46,6 +46,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 		puts  "Importing special_task on #{Time.now}"
 		ft = GData::Client::FusionTables.new 
 		ft.clientlogin(Yetting.fusion_account,Yetting.fusion_password)		
+		ft.set_api_key(Yetting.api_key)
 		special_task_google_table = ft.show_tables[ft.show_tables.index{|x|x.name=="Special Tasks"}]
 
 		#for table in ft.show_tables
@@ -79,9 +80,7 @@ Also fetches corresponding phone-entry image from app-spot and saves it via [pap
 			begin
 				location = record["location".to_sym]
 				unless location.nil?
-					location.slice!("</coordinates></Point>")
-					location.slice!("<Point><coordinates>")
-					locations = location.split(",")
+					locations = location["geometry"]["coordinates"]
 				end
 
 				if record["simid".downcase.to_sym].blank?
