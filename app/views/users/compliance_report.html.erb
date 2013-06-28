@@ -1,0 +1,69 @@
+<ul class="breadcrumb">
+  <li>
+	<%= link_to "Punjab", compliance_report_province_path('punjab'), :method => :get %> <span class="divider">/</span>
+  </li>
+  <li>
+	<%= link_to "#{@officer.district.name.titleize}", compliance_report_district_path(@officer.district) %> <span class="divider">/</span>
+  </li>
+  <li class="active">
+	<%= @officer.name.titleize %>
+  </li>
+</ul>
+
+<div class="page-header"> <h1> <%= @officer.name.titleize %> <div id="visualization_type" class="pull-right" style="font-weight:normal;">Trend - Compliance Report</div></h1> </div>
+
+<%= render :partial => 'partials/compliance_controls', :locals => { :parent => @officer} %>
+
+	<div class="alert alert-info fade in" data-alert="alert">
+		<a class="close" data-dismiss='alert' href="#">x</a>
+		<div id="help_bar">
+			This graph plots the <strong>compliance of the officer as a percentage across time</strong>. 
+			This lets you quickly analyze the compliance-trend of <strong>all phone-related activities being conducted by the officer</strong>.
+		</div>
+	</div>
+	
+
+<div class="tabbable">
+
+        <div class="tab-content">
+		
+			<div class="tab-pane active" id="total_compliance_barchart">
+				<div class="chart_panel" id='visualization_area'>
+					<div id="loading2" class="loading"><h2>Loading Please Wait</h2>  <%= image_tag("large-spinner.gif", :alt => "Loading....") %></div>		
+				</div>
+			</div>
+			
+			<div class="tab-pane" id="activity_map">
+				<%= gmaps(:map_options => { :auto_adjust => "true", :type => "HYBRID", :raw => '{ streetViewControl: false }'},
+						  :markers     => { :data => generate_entry_markers(@phone_entries), :options => {:do_clustering => true } },
+						  :polygons => { "data" => @boundaries } )
+				 %>	
+			</div>
+			
+		</div>
+</div>
+<br/>
+<hr>
+
+<div class="row">
+	<div class="span12">
+		<legend>Entries Table 
+</legend>
+	</div>
+</div>
+
+<div id="chart"><%= render '/phone_entries/entries_table' %></div>
+
+<script type="text/javascript">
+	
+	preloading_functions["graph"] = function()
+	{
+		<%= render_chart_define_chart overall_compliance_trend(@officer,'auto',550), 'visualization_area'%>
+	}
+
+	loading_functions["total_compliance_trend"] = function()
+	{
+		<%= render_chart_with_transition overall_compliance_trend([@officer,@district],'auto',550), 'visualization_area' %>
+	}
+	
+</script>

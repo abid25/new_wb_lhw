@@ -1,0 +1,27 @@
+
+<table class="table table-striped" id="indicators_dtable">
+	<thead>
+	<tr>
+		<th><center>Name</center></th>
+		<% for indicator in indicators %>
+			<th><center><%=indicator.short_name%></center></th>
+		<% end %>
+	</tr>
+			</thead>
+			<tbody>
+				<% for unit in collection %>
+					<tr>
+					<% if unit.class.name=="Visitor" %>
+						<td><%= link_to unit.name.titleize, send("indicators_report_user_path", unit)%></td>
+					<% else %>
+						<td><%= link_to unit.name.titleize, send("indicators_report_#{unit.class.name.to_s.underscore}_path", unit)%></td>
+					<% end %>
+						<% for indicator in indicators %>
+							<td class="center"> 
+								<%= unit.get_indicator_value(indicator,indicator.table_display_type) %> 
+							</td>
+						<% end %>
+					</tr>
+				<% end %>
+			</tbody>
+</table>
