@@ -17,9 +17,8 @@ production:
   adapter: mysql2
   username: root
   database: lhw_production
-  password: lhwict1234
-  host: localhost
-  socket: /var/lib/mysql/mysql.sock
+  password: 
+  host: 127.0.0.1
 
 test:
   <<: *defaults
