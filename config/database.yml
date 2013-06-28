@@ -17,7 +17,7 @@ production:
   adapter: mysql2
   username: root
   database: lhw_production
-  password:
+  password: lhwict1234
   host: 127.0.0.1
 
 test:
