@@ -55,26 +55,7 @@ module ComplianceReportsHelper
 			data_table.add_row([key]+ result.flatten+[true])
 		}
 
-=begin	for projected values
-		if Time.now.prev_month.beginning_of_month<=@start_time.beginning_of_month 
-			projected_values = []
-			[*collection].each_with_index {|unit, index|
-				gradient = data_table.rows[data_table.rows.size-1][index+1].v - data_table.rows[data_table.rows.size-2][index+1].v
-				projected_value = data_table.rows[data_table.rows.size-1][index+1].v + gradient 
-				
-				if projected_value < 0
-					projected_value =0
-					else if projected_value > 100
-						projected_value = 100
-					end
-				end
-				projected_values.append(projected_value)
-			}
-
-			data_table.add_row([(@start_time+1.month).strftime("%b %y ")]+ projected_values +[false])
-		end
-=end
-		opts   = {:height=> height ,:chartArea=> {:top => 25, :height=> "85%", :width=>"90%"},:lineWidth => 3,:pointSize => 7, :series => line_series, :curveType=> "function",:legend=>{:position=>"top"}, :animation => {:duration => '2000', :easing => 'linear'},:vAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>101, :min=>-10,:minvalue => 0, :maxValue => 100}}}
+		opts      = {:height=> height ,:chartArea=> {:top => 25, :height=> "85%", :width=>"90%"},:lineWidth => 3,:pointSize => 7, :series => line_series, :curveType=> "function",:legend=>{:position=>"top"}, :animation => {:duration => '2000', :easing => 'linear'},:vAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>101, :min=>-10,:minvalue => 0, :maxValue => 100}}}
 		@barchart = GoogleVisualr::Interactive::LineChart.new(data_table, opts)
 		
 		return @barchart

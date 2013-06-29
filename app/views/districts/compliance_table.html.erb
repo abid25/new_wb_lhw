@@ -1,2 +1,4 @@
-<%= render  :partial => 'partials/compliance_controls', :locals => { :parent     => @district } %>
-<%= render  :partial => 'compliance_table_report',      :locals => { :collection => @district } %>
+<%= render  :partial => 'partials/compliance_controls', :locals => { parent: @district } %>
+
+<div id="chart"><%= render  :partial => 'compliance_table_report', locals: { :collection => @district } %>
+</div>
