@@ -24,8 +24,8 @@ if ($('#users_controller').length)
 		var loading_functions = new Object();
 		var preloading_functions = new Object();
 		var map_reload = 1;
-		var current_visualization = "map";
-		var current_visualization_type = "map"		
+		var current_visualization = "total_compliance_trend";
+		var current_visualization_type = "graph"		
 		$(document).ready(function() 
 		{
 			$(".poppable").popover(); //Always place this before applying datatables
