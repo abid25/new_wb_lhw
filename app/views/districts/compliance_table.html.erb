@@ -1,3 +1,12 @@
+<ul class="breadcrumb">
+  <li>
+  <%= link_to "Punjab", compliance_report_province_path('punjab'), :method => :get %> <span class="divider">/</span>
+  </li>
+  <li>
+  <%= link_to "#{@district.name.titleize}", compliance_report_district_path(@district) %> <span class="divider">/</span>
+  </li>
+</ul>
+
 <%= render  :partial => 'partials/compliance_controls', :locals => { parent: @district } %>
 
 <div id="chart"><%= render  :partial => 'compliance_table_report', locals: { :collection => @district } %>

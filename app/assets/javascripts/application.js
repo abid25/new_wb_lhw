@@ -40,7 +40,6 @@ $('#time_filter_start_time_1i').live('change', function()
 
 $("*[data-spinner]").live('ajax:beforeSend', function(e){
 	$($(this).data('spinner')).show();
-  e.stopPropagation(); //Don't show spinner of parent elements.
 });
 
 $("*[data-spinner]").live('ajax:complete', function(){

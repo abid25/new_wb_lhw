@@ -31,6 +31,41 @@
 			<ul class="nav">
 			  <% if user_signed_in? %>
 
+
+			  <% if can? :view_compliance_reports, District %>
+				<% districts = District.accessible_by(current_ability, :view_compliance_reports).order("district_name ASC") %>
+
+				<li class="dropdown">
+
+				<a href="#" class="dropdown-toggle" data-toggle='dropdown'>
+				<i class="icon-check icon-white"></i> Total Compliance
+				<b class='caret'></b>
+				</a>
+
+					<% if districts.count < 9 %>
+
+						<ul class="dropdown-menu">
+						  <li class="divider"></li>
+						  <% for district in districts %>
+							<li><%= link_to "#{district.district_name.titleize}", compliance_table_district_path(:id=>district) %></li>
+						  <% end %>
+						</ul>
+
+					<% else %>
+
+						<ul class="dropdown-menu dropdown-menu-large">
+						  <li class="divider"></li>
+							<div class="row">
+						  <% for district in districts %>
+							<div class="span1_5-dropdown"><li><%= link_to "#{district.district_name.titleize}", compliance_table_district_path(district) %></li></div>
+						  <% end %>
+						  </div>
+						</ul>
+
+					<% end %>
+				  </li>
+			  <% end %>
+
 			  <% if can? :view_compliance_reports, District %>
 				<% districts = District.accessible_by(current_ability, :view_compliance_reports).order("district_name ASC") %>
 

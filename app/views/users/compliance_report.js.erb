@@ -2,7 +2,7 @@ Gmaps.map.replaceMarkers(<%= raw generate_entry_markers(@phone_entries) %>);
 
 loading_functions["total_compliance_trend"] = function()
 {
-	<%= render_chart_with_transition overall_compliance_trend([@officer,@district],'auto',550), 'visualization_area' %>
+	<%= render_chart_with_transition overall_compliance_trend([@officer,@district], 'auto', 550), 'visualization_area' %>
 }
 
 if (current_visualization_type!="map")
