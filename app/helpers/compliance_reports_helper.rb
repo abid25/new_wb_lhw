@@ -55,7 +55,7 @@ module ComplianceReportsHelper
 			data_table.add_row([key]+ result.flatten+[true])
 		}
 
-		opts      = {:height=> height ,:chartArea=> {:top => 25, :height=> "85%", :width=>"90%"},:lineWidth => 3,:pointSize => 7, :series => line_series, :curveType=> "function",:legend=>{:position=>"top"}, :animation => {:duration => '2000', :easing => 'linear'},:vAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>101, :min=>-10,:minvalue => 0, :maxValue => 100}}}
+		opts   = {:height=> height ,:chartArea=> {:top => 25, :height=> "85%", :width=>"90%"},:lineWidth => 3,:pointSize => 7, :series => line_series, :curveType=> "function",:legend=>{:position=>"top"}, :animation => {:duration => '2000', :easing => 'linear'},:vAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>101, :min=>-10,:minvalue => 0, :maxValue => 100}}}
 		@barchart = GoogleVisualr::Interactive::LineChart.new(data_table, opts)
 		
 		return @barchart

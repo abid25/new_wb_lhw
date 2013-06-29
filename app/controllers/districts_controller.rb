@@ -41,7 +41,6 @@ class DistrictsController < ApplicationController
 			flash[:error] = "The specified district does not exist."
 			redirect_to root_path
 		end
-			
 	rescue ArgumentError
 		puts "caught exception!!!~"			
 	end
