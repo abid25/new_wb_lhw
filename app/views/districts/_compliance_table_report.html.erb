@@ -4,19 +4,22 @@
     <tr>
       <th colspan="2"> <center> Visitors </center> </th>
       <th colspan="6"> <center> Monitoring Forms </center> </th>
-      <th colspan="2"> <center>Visits Performed </center></th>
+      <th colspan="1"> <center> Visits Performed </center></th>
+      <th colspan="3"> <center> Compliance </center></th>
     </tr>
     <tr>
       <th>Name</th>
-      <th>No. of Lhws</th>
-      <th>ChildHealth</th>
-      <th>HealthHouse</th>
-      <th>Maternal</th>
-      <th>SupportGroupMeeting</th>
-      <th>FamilyPlanning</th>
-      <th>SpecialTask</th>
-      <th>Total</th>
-      <th>Compliance</th>
+      <th><center> No. of Lhws         </center> </th>
+      <th><center> ChildHealth         </center> </th>
+      <th><center> HealthHouse         </center> </th>
+      <th><center> Maternal            </center> </th>
+      <th><center> SupportGroupMeeting </center> </th>
+      <th><center> FamilyPlanning      </center> </th>
+      <th><center> SpecialTask         </center> </th>
+      <th><center> Total               </center> </th>
+      <th><center> Form                </center> </th>
+      <th> <center> Lhw visited        </center></th>
+      <th> <center> Number of days     </center></th>
     </tr> 
   </thead>
   <% @district.visitors.each do |v| %>
@@ -32,6 +35,8 @@
 
     <td> <center> <%= v.total_form_submitted_used_for_compliance(Date.today.beginning_of_month) %> </center> </td>
     <td> <center> <%= v.total_compliance(Date.today.beginning_of_month) %> </center> </td>
+    <td> <center> <%= v.number_of_lhw_visited_compliance(Date.today.beginning_of_month) %> </center> </td>
+    <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month) %> </center> </td>
     <% else %>
     <% ['ChildHealth', 'HealthHouse', 'Maternal', 'SupportGroupMeeting', 'FpClient', 'SpecialTask'].each do |type| %>
     <td> <center> <%= v.phone_entries.where(type: type, meta_submission_date: @time_filter..@time_filter.end_of_month).count %>
@@ -40,6 +45,8 @@
 
     <td> <center> <%= v.total_form_submitted_used_for_compliance(@time_filter) %> </center> </td>
     <td> <center> <%= v.total_compliance(@time_filter) %> </center> </td>
+    <td> <center> <%= v.number_of_lhw_visited_compliance(@time_filter) %> </center> </td>
+    <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
     <% end %>
   </tr>
   <% end %>

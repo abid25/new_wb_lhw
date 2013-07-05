@@ -25,9 +25,39 @@ class Visitor < ActiveRecord::Base
 
 	NOT_USED_IN_COMPLIANCE = ['Newborn', 'ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
 
+	# (no. of days in the field) / 20
+	#this will be the number of unique days in the month that the LHS has uploaded forms. special task forms included
+	def number_of_days_in_field(time_filter)
+		days_in_field = []
+		phone_entries_with_time_filter(time_filter).each do |entry|
+			days_in_field << entry.meta_submission_date.to_date
+		end
+		(days_in_field.uniq.count.to_f / 20.0).round(2)
+	end
+
+
+	#  (no. of uniq LHWs visited) / 20 
+	def number_of_lhw_visited_compliance(time_filter)
+		lhw_visited = []
+		phone_entries_with_time_filter(time_filter).each do |entry|
+			if entry.detail.class == "SpecialTaskDetail".constantize
+				lhw_visited << entry.detail.lhw_visited
+			else
+				lhw_visited << entry.detail.lhw_code unless entry.detail.blank?
+			end
+		end
+
+		lhw_visited.count.to_f / 20.0
+	end
+
+	def phone_entries_with_time_filter(time_filter)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, meta_submission_date: time_filter..time_filter.end_of_month)
+	end
+
+	# form compliance
 	def total_compliance(time_filter)
 		return 0 if lhw_details.count == 0
-		'%.2f' % (total_form_submitted_used_for_compliance(time_filter)/(lhw_details.count*5).to_f * 100)
+		'%.2f' % (total_form_submitted_used_for_compliance(time_filter).to_f/100)
 	end
 
 	def total_form_submitted_used_for_compliance(time_filter)
