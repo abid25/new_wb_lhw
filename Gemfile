@@ -29,6 +29,8 @@ gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 gem "eventmachine"
 gem 'rb-readline', '~> 0.4.2'
 gem 'therubyracer'
+gem 'whenever', :require => false
+gem 'delayed_job_active_record'
 #gem 'client_side_validations', :git => 'git://github.com/bcardarella/client_side_validations.git'
 #gem 'client_side_validations-simple_form', :git => 'git://github.com/dockyard/client_side_validations-simple_form.git'
 

@@ -18,6 +18,20 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every 1.minute do 
-	command "echo 'you can use raw cron syntax too'"
+every 4.hours do
+  runner "ChildHealth.delay.import_data"
+  runner "HealthHouse.delay.import_data"
+  runner "ChildHealth.delay.import_data"
+  runner "Maternal.delay.import_data"
+  runner "Newborn.delay.import_data "
+  runner "SpecialTask.delay.import_data"
+  runner "SupportGroupMeeting.delay.import_data"
+  runner "FpClient.delay.import_data"
+
+  runner "ReportingCommunityMeeting.delay.import_data"
+  runner "ReportingFacility.delay.import_data"
+  runner "ReportingBirthDeath.delay.import_data"
+  runner "ReportingChildHealth.delay.import_data"
+  runner "ReportingFamilyPlanning.delay.import_data"
+  runner "ReportingTreatment.delay.import_data"
 end
