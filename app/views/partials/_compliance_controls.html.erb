@@ -8,6 +8,12 @@
 			<%= f.input :start_time, :label=> false, :as => :date, :start_year => 2011, :discard_day => true,
 			:order => [:month, :year], :default=> @start_time, :input_html => { :class => "span2" } %> 
 		</div>
+
+			<% if params[:action]=="compliance_table" && params[:controller]=="districts" %>
+				<div class="span3">
+				<%= f.select :designation, [["LHS", "LHS"], ["FPO", "FPO"]] %>
+				</div>
+			<% end %>
 		<% end %>
 
 		<% unless params[:action] == "compliance_table" %>

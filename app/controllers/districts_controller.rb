@@ -126,6 +126,13 @@ class DistrictsController < ApplicationController
 	end
 
 	def compliance_table
+		if params[:time_filter].present? && params[:time_filter][:designation].present?
+			designation = params[:time_filter].delete :designation
+			@visitors   = Visitor.where(designation: designation)
+		else
+			@visitors = Visitor.where(designation: "LHS")
+		end
+
 		@district = District.find_by_district_name(params[:id])
 		
 		if params[:time_filter].nil?
@@ -136,5 +143,8 @@ class DistrictsController < ApplicationController
 			@start_time  = Time.zone.parse(params[:time_filter]["start_time(3i)"]+"-"+params[:time_filter]["start_time(2i)"]+"-"+params[:time_filter]["start_time(1i)"])
 			@end_time    = @start_time.end_of_month
 		end
+
+		session[:start_time] = @start_time
+		session[:end_time]   = @end_time
 	end
 end

@@ -28,13 +28,16 @@ function color_legend()
 
 $('#time_filter_start_time_2i').live('change', function() 
 {
-	console.log("testing2i")
 	$(this).parents('form:first').submit();
 });
 
 $('#time_filter_start_time_1i').live('change', function() 
 {
-	console.log("testing1i")
+	$(this).parents('form:first').submit();
+});
+
+$('#time_filter_designation').live('change', function() 
+{
 	$(this).parents('form:first').submit();
 });
 

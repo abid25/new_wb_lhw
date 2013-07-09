@@ -23,7 +23,7 @@ class Visitor < ActiveRecord::Base
 	scope :submits_reports, where("designation NOT IN (?)", ["FPO"])	
 	belongs_to :district
 
-	NOT_USED_IN_COMPLIANCE = ['Newborn', 'ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
+	NOT_USED_IN_COMPLIANCE = ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
 
 	# (no. of days in the field) / 20
 	#this will be the number of unique days in the month that the LHS has uploaded forms. special task forms included
@@ -51,7 +51,7 @@ class Visitor < ActiveRecord::Base
 	end
 
 	def phone_entries_with_time_filter(time_filter)
-		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, meta_submission_date: time_filter..time_filter.end_of_month)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, start_time: time_filter..time_filter.end_of_month)
 	end
 
 	# form compliance
@@ -60,7 +60,7 @@ class Visitor < ActiveRecord::Base
 	end
 
 	def total_form_submitted_used_for_compliance(time_filter)
-		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, meta_submission_date: time_filter..time_filter.end_of_month).count
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, start_time: time_filter..time_filter.end_of_month).count
 	end
 
 	def assessments_required(number_of_months)
@@ -84,8 +84,8 @@ class Visitor < ActiveRecord::Base
 	end
 
 	def compliance_statistics(end_time)
-		self.total_conducted = self.phone_entries.counts_for_compliance.group(" DATE_FORMAT(start_time, '%b %y')").order("start_time ASC").where(:start_time=>(end_time.beginning_of_month-1.year..end_time.end_of_day)).count
-		self.total_expected = (self.units_assigned*4) + 7
+		self.total_conducted  = self.phone_entries.counts_for_compliance.group(" DATE_FORMAT(start_time, '%b %y')").order("start_time ASC").where(:start_time=>(end_time.beginning_of_month-1.year..end_time.end_of_day)).count
+		self.total_expected   = (self.units_assigned*4) + 7
 		self.total_percentage = self.total_conducted.each_with_object({}) {|(k, v), h| h[k] = v > self.total_expected ? 100 : ((v.to_f/self.total_expected.to_f)*100).round(1) } 
 	end
 	

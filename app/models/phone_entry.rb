@@ -32,7 +32,7 @@ Abstract Class that wraps all phone related activities together.
 class PhoneEntry < ActiveRecord::Base
 	has_attached_file :photo, :styles => { :thumb => "300x240>"}
 	belongs_to :visitor, :primary_key => :device_id, :foreign_key => :device_id
-	scope :counts_for_compliance, where("type NOT IN (?)", ["Newborn","ChildHealth","SpecialTask"])	
+	scope :counts_for_compliance, where("type NOT IN (?)", ["Newborn"])	
 	acts_as_gmappable :lat => 'location_y', :lng => 'location_x', :process_geocoding => false
 	reverse_geocoded_by 'location_y', 'location_x'
 	

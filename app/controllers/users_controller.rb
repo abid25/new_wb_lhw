@@ -92,8 +92,15 @@ class UsersController < ApplicationController
   
   
 	def compliance_report
-		
-		if params[:time_filter].nil?
+		if session[:start_time].present? && session[:end_time].present? && params[:time_filter].nil?
+			@officer    = Visitor.find(params[:id])
+			@start_time = session.delete :start_time
+			@end_time   = session.delete :end_time
+		elsif session[:start_time].present? && session[:end_time].present? && params[:time_filter].present?
+			@officer = Visitor.find(params[:time_filter][:id])
+			@start_time = session.delete :start_time
+			@end_time   = session.delete :end_time
+		elsif params[:time_filter].nil?
 			@officer = Visitor.find(params[:id])
 			@start_time = Time.now.prev_month.beginning_of_month
 			@end_time = Time.now.prev_month.end_of_month
