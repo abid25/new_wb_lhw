@@ -56,8 +56,7 @@ class Visitor < ActiveRecord::Base
 
 	# form compliance
 	def total_compliance(time_filter)
-		return 0 if lhw_details.count == 0
-		'%.2f' % (total_form_submitted_used_for_compliance(time_filter).to_f/100)
+		'%.2f' % (total_form_submitted_used_for_compliance(time_filter).to_f)
 	end
 
 	def total_form_submitted_used_for_compliance(time_filter)
