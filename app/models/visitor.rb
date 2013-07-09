@@ -32,7 +32,7 @@ class Visitor < ActiveRecord::Base
 		phone_entries_with_time_filter(time_filter).each do |entry|
 			days_in_field << entry.meta_submission_date.to_date
 		end
-		(days_in_field.uniq.count.to_f / 20.0).round(2)
+		(days_in_field.uniq.count.to_f / 20.0).round(1)
 	end
 
 
@@ -56,7 +56,7 @@ class Visitor < ActiveRecord::Base
 
 	# form compliance
 	def total_compliance(time_filter)
-		'%.2f' % (total_form_submitted_used_for_compliance(time_filter).to_f)
+		'%.1f' % (total_form_submitted_used_for_compliance(time_filter).to_f)
 	end
 
 	def total_form_submitted_used_for_compliance(time_filter)
