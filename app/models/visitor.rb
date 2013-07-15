@@ -32,7 +32,7 @@ class Visitor < ActiveRecord::Base
 		phone_entries_with_time_filter(time_filter).each do |entry|
 			days_in_field << entry.meta_submission_date.to_date
 		end
-		(days_in_field.uniq.count.to_f / 20.0).round(1)
+		(days_in_field.uniq.count.to_f / 20.0).round(1) * 100
 	end
 
 
@@ -47,7 +47,7 @@ class Visitor < ActiveRecord::Base
 			end
 		end
 
-		lhw_visited.count.to_f / 20.0
+		(lhw_visited.count.to_f / 20.0) * 100
 	end
 
 	def phone_entries_with_time_filter(time_filter)
@@ -83,7 +83,7 @@ class Visitor < ActiveRecord::Base
 		self.designation !="FPO" ? 1 : 0
 	end
 
-	def compliance_statistics(end_time)
+	def counts_for_compliance(end_time)
 		self.total_conducted  = self.phone_entries.counts_for_compliance.group(" DATE_FORMAT(start_time, '%b %y')").order("start_time ASC").where(:start_time=>(end_time.beginning_of_month-1.year..end_time.end_of_day)).count
 		self.total_expected   = (self.units_assigned*4) + 7
 		self.total_percentage = self.total_conducted.each_with_object({}) {|(k, v), h| h[k] = v > self.total_expected ? 100 : ((v.to_f/self.total_expected.to_f)*100).round(1) } 
