@@ -116,7 +116,7 @@ class UsersController < ApplicationController
 			@boundaries = District.get_boundaries(@district)
 			define_activity_legend
 			
-			@officer.compliance_statistics(@end_time)
+			@district.compliance_statistics(@end_time)
 			@district.compliance_statistics(@end_time)
 			
 			# @a_count = @officer.assessments.where(:start_time=>(@start_time..@end_time.end_of_day)).count
