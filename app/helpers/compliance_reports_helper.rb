@@ -46,15 +46,10 @@ module ComplianceReportsHelper
 		}
 		data_table.new_column('boolean' , nil, nil, 'certainty')
 		
-		[*collection].last.total_percentage.each_key {|key| 
-			result = []
-			[*collection].each {|unit|
-				
-				result.append(unit.total_percentage[key] ? unit.total_percentage[key] : 0)
-			}
-			data_table.add_row([key]+ result.flatten+[true])
-		}
-
+		for unit in collection
+			data_table.add_row([unit.name.titleize, unit.total_percentage,unit.monitoring_percentage,unit.reporting_percentage])
+		end
+		
 		opts   = {:height=> height ,:chartArea=> {:top => 25, :height=> "85%", :width=>"90%"},:lineWidth => 3,:pointSize => 7, :series => line_series, :curveType=> "function",:legend=>{:position=>"top"}, :animation => {:duration => '2000', :easing => 'linear'},:vAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>101, :min=>-10,:minvalue => 0, :maxValue => 100}}}
 		@barchart = GoogleVisualr::Interactive::LineChart.new(data_table, opts)
 		

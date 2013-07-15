@@ -55,11 +55,6 @@
 <div id="chart"><%= render '/phone_entries/entries_table' %></div>
 
 <script type="text/javascript">
-	
-	preloading_functions["graph"] = function()
-	{
-		<%= render_chart_define_chart overall_compliance_trend(@officer,'auto',550), 'visualization_area'%>
-	}
 
 	loading_functions["total_compliance_trend"] = function()
 	{
