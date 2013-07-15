@@ -47,7 +47,7 @@ class Visitor < ActiveRecord::Base
 			end
 		end
 
-		(lhw_visited.count.to_f / 20.0) * 100
+		((lhw_visited.count.to_f / 20.0) * 100).round(1)
 	end
 
 	def phone_entries_with_time_filter(time_filter)
