@@ -23,7 +23,7 @@ module ComplianceReportsHelper
 		data_table = GoogleVisualr::DataTable.new
 		data_table.new_column('string', 'Name')
 		data_table.new_column('number', 'Total Compliance %')
-		
+
 		for unit in collection
 			data_table.add_row([unit.name.titleize, unit.total_percentage])
 		end
