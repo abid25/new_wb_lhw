@@ -28,32 +28,32 @@
       <% if @time_filter.blank? %>
         <td>
           <center>
-           <%= v.total_form_submitted_used_for_monitoring_compliance(Date.today.beginning_of_month) %>
+           <%= v.total_form_submitted_used_for_monitoring_compliance(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
         <td>
           <center>
-            <%= v.total_form_submitted_used_for_reporting_compliance(Date.today.beginning_of_month) %>
+            <%= v.total_form_submitted_used_for_reporting_compliance(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
         <td>
           <center>
-            <%= v.total_forms_count(Date.today.beginning_of_month) %>
+            <%= v.total_forms_count(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
         <td>
           <center>
-            <%= v.forms_in_unique_dates(Date.today.beginning_of_month) %>
+            <%= v.forms_in_unique_dates(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
-        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.total_form_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.total_form_complaince(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month) %> </center> </td>
+        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <td> <center> <%= v.total_form_reporting_compliance(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <td> <center> <%= v.total_form_complaince(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
       <% else %>
         <td>
           <center>
@@ -75,14 +75,14 @@
 
         <td>
           <center>
-            <%= v.forms_in_unique_dates(Date.today.beginning_of_month) %>
+            <%= v.forms_in_unique_dates(@time_filter) %>
           </center>
         </td>
 
-        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.total_form_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.total_form_complaince(Date.today.beginning_of_month) %> </center> </td>
-        <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month) %> </center> </td>
+        <td> <center> <%= v.total_monitoring_compliance(@time_filter) %> </center> </td>
+        <td> <center> <%= v.total_form_reporting_compliance(@time_filter) %> </center> </td>
+        <td> <center> <%= v.total_form_complaince(@time_filter) %> </center> </td>
+        <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
       <% end %>
     </tr>
   <% end %>
