@@ -18,7 +18,9 @@
 # end
 
 # Learn more: http://github.com/javan/whenever
-every 4.hours do
+set :output, '/log/cron_log.log'
+
+every 1.hours do
   runner "ChildHealth.delay.import_data"
   runner "HealthHouse.delay.import_data"
   runner "ChildHealth.delay.import_data"
