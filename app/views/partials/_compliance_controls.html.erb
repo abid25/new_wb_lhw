@@ -9,14 +9,14 @@
 			:order => [:month, :year], :default=> @start_time, :input_html => { :class => "span2" } %> 
 		</div>
 
-			<% if params[:action]=="compliance_table" && params[:controller]=="districts" %>
+			<% if ((params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" ) && params[:controller]=="districts") %>
 				<div class="span3">
 				<%= f.select :designation, [["LHS", "LHS"], ["FPO", "FPO"]] %>
 				</div>
 			<% end %>
 		<% end %>
 
-		<% unless params[:action] == "compliance_table" %>
+		<% unless (params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" ) %>
 		<div class="span8">
 			<%= medium_spinner_tag 'time_filter_spinner' %>
 			

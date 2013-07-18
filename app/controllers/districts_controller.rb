@@ -126,6 +126,20 @@ class DistrictsController < ApplicationController
 	end
 
 	def compliance_table
+		calculate_compliances
+	end
+
+	def monitoring_compliance_table
+		calculate_compliances
+	end
+
+	def reporting_compliance_table
+		calculate_compliances
+	end
+
+	private
+
+	def calculate_compliances
 		if params[:time_filter].present? && params[:time_filter][:designation].present?
 			designation = params[:time_filter].delete :designation
 			@visitors   = Visitor.where(designation: designation)

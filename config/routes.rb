@@ -36,6 +36,8 @@ Lhw::Application.routes.draw do
 			get  :indicators_report_by_people
 			post :indicators_report_by_people
 		  get  :compliance_table
+      get  :monitoring_compliance_table
+      get  :reporting_compliance_table
       post :compliance_table
       post :filter_for_compliance_table
     end
@@ -99,7 +101,7 @@ Lhw::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'districts#compliance_table', :id => 'layyah'
+  root :to => 'districts#monitoring_compliance_table', :id => 'layyah'
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

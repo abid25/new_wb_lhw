@@ -23,16 +23,42 @@ class Visitor < ActiveRecord::Base
 	scope :submits_reports, where("designation NOT IN (?)", ["FPO"])	
 	belongs_to :district
 
-	NOT_USED_IN_COMPLIANCE = ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
+	NOT_USED_IN_MONITORING_COMPLIANCE = ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
+	NOT_USED_IN_REPORTING_COMPLIANCE  = ['ChildHealth', 'HealthHouse', 'Maternal', 'Newborn', 'SpecialTask', 'SupportGroupMeeting', 'FpClient']
+
+# total forms for monitoring and reporting
+	def total_forms_count(time_filter)
+		total_form_submitted_used_for_monitoring_compliance(time_filter) + total_form_submitted_used_for_reporting_compliance(time_filter)
+	end
+
+	#total complaince monitoring + reporting
+	def total_form_complaince(time_filter)
+		total_monitoring_compliance(time_filter) + total_form_reporting_compliance(time_filter)
+	end
 
 	# (no. of days in the field) / 20
 	#this will be the number of unique days in the month that the LHS has uploaded forms. special task forms included
 	def number_of_days_in_field(time_filter)
 		days_in_field = []
 		phone_entries_with_time_filter(time_filter).each do |entry|
-			days_in_field << entry.meta_submission_date.to_date
+			days_in_field << entry.start_time.to_date
 		end
-		(days_in_field.uniq.count.to_f / 20.0).round(1)
+
+		(days_in_field.uniq.count.to_f / 20.0).round(2)
+	end
+
+	#  (no. of uniq LHWs visited) / 20 
+	def forms_in_unique_dates(time_filter)
+		lhw_visited = []
+		phone_entries_with_time_filter(time_filter).each do |entry|
+			if entry.detail.class == "SpecialTaskDetail".constantize
+				lhw_visited << entry.detail.lhw_visited
+			else
+				lhw_visited << entry.detail.lhw_code unless entry.detail.blank?
+			end
+		end
+
+		lhw_visited.count
 	end
 
 
@@ -51,16 +77,25 @@ class Visitor < ActiveRecord::Base
 	end
 
 	def phone_entries_with_time_filter(time_filter)
-		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, start_time: time_filter..time_filter.end_of_month)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_MONITORING_COMPLIANCE, start_time: time_filter..time_filter.end_of_month)
 	end
 
-	# form compliance
-	def total_compliance(time_filter)
-		'%.1f' % (total_form_submitted_used_for_compliance(time_filter).to_f)
+	# monitoring forms compliance
+	def total_monitoring_compliance(time_filter)
+		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_f).round(2)
 	end
 
-	def total_form_submitted_used_for_compliance(time_filter)
-		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_COMPLIANCE, start_time: time_filter..time_filter.end_of_month).count
+	# monitoring forms compliance
+	def total_form_reporting_compliance(time_filter)
+		(total_form_submitted_used_for_reporting_compliance(time_filter).to_f).round(2)
+	end
+
+	def total_form_submitted_used_for_monitoring_compliance(time_filter)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_MONITORING_COMPLIANCE, start_time: time_filter..time_filter.end_of_month).count
+	end
+
+	def total_form_submitted_used_for_reporting_compliance(time_filter)
+		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_REPORTING_COMPLIANCE, start_time: time_filter..time_filter.end_of_month).count
 	end
 
 	def assessments_required(number_of_months)
@@ -86,7 +121,7 @@ class Visitor < ActiveRecord::Base
 	def compliance_statistics(end_time)
 		self.total_conducted  = self.phone_entries.counts_for_compliance.group(" DATE_FORMAT(start_time, '%b %y')").order("start_time ASC").where(:start_time=>(end_time.beginning_of_month-1.year..end_time.end_of_day)).count
 		self.total_expected   = (self.units_assigned*4) + 7
-		self.total_percentage = self.total_conducted.each_with_object({}) {|(k, v), h| h[k] = v > self.total_expected ? 100 : ((v.to_f/self.total_expected.to_f)*100).round(1) } 
+		self.total_percentage = self.total_conducted.each_with_object({}) {|(k, v), h| h[k] = v > self.total_expected ? 100 : ((v.to_f/self.total_expected.to_f)*100).round(2) } 
 	end
 	
 
