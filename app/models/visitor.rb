@@ -38,6 +38,17 @@ class Visitor < ActiveRecord::Base
 
 	# (no. of days in the field) / 20
 	#this will be the number of unique days in the month that the LHS has uploaded forms. special task forms included
+	def number_of_unique_days_in_field(time_filter)
+		days_in_field = []
+		phone_entries_with_time_filter(time_filter).each do |entry|
+			days_in_field << entry.start_time.to_date
+		end
+
+		days_in_field.uniq.count
+	end
+
+	# (no. of days in the field) / 20
+	#this will be the number of unique days in the month that the LHS has uploaded forms. special task forms included
 	def number_of_days_in_field(time_filter)
 		days_in_field = []
 		phone_entries_with_time_filter(time_filter).each do |entry|
@@ -48,7 +59,7 @@ class Visitor < ActiveRecord::Base
 	end
 
 	#  (no. of uniq LHWs visited) / 20 
-	def forms_in_unique_dates(time_filter)
+	def number_of_lhws_visited(time_filter)
 		lhw_visited = []
 		phone_entries_with_time_filter(time_filter).each do |entry|
 			if entry.detail.class == "SpecialTaskDetail".constantize
@@ -58,7 +69,7 @@ class Visitor < ActiveRecord::Base
 			end
 		end
 
-		lhw_visited.count
+		lhw_visited.uniq.count
 	end
 
 

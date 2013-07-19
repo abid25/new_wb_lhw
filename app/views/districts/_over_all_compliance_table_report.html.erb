@@ -3,7 +3,7 @@
   <thead>
     <tr>
       <th colspan="1"> <center> Visitors </center> </th>
-      <th colspan="4"> <center> Forms Statistics </center> </th>
+      <th colspan="5"> <center> Forms Statistics </center> </th>
       <th colspan="4"> <center> Complaince Statistics </center></th>
     </tr>
     <tr>
@@ -12,7 +12,8 @@
       <th><center> Total Monitoring Forms </center> </th>
       <th><center> Total Reporting Forms  </center> </th>
       <th><center> Forms Total            </center> </th>
-      <th><center> Forms In Unqiue Dates  </center> </th>
+      <th><center> Number of Lhw's Visited </center> </th>
+      <th><center> Forms in Unique Dates   </center> </th>
 
       <th><center> Monitoring Compliance  </center> </th>
       <th><center> Reporting Compliance   </center> </th>
@@ -46,7 +47,13 @@
 
         <td>
           <center>
-            <%= v.forms_in_unique_dates(Date.today.beginning_of_month - 1.month) %>
+            <%= v.number_of_lhws_visited(Date.today.beginning_of_month - 1.month) %>
+          </center>
+        </td>
+
+        <td>
+          <center>
+            <%= v.number_of_unique_days_in_field(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
@@ -75,7 +82,13 @@
 
         <td>
           <center>
-            <%= v.forms_in_unique_dates(@time_filter) %>
+            <%= v.number_of_lhws_visited(Date.today.beginning_of_month - 1.month) %>
+          </center>
+        </td>
+
+        <td>
+          <center>
+            <%= v.number_of_unique_days_in_field(@time_filter) %>
           </center>
         </td>
 
