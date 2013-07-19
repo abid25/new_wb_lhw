@@ -29,7 +29,7 @@
     <td> <center> <%= v.lhw_details.count %> </center> </td>
 
     <% if @time_filter.blank? %>
-      <% Visitor::NOT_USED_IN_REPORTING_COMPLIANCE.each do |type| %>
+      <% ['ChildHealth', 'HealthHouse', 'Maternal', 'Newborn', 'SpecialTask', 'SupportGroupMeeting', 'FpClient'].each do |type| %>
         <td> <center> <%= v.phone_entries.where(type: type, start_time: (Date.today.beginning_of_month-1.month)..(Date.today.end_of_month-1.month)).count %>
         </center> </td>
       <% end %>
@@ -39,7 +39,7 @@
       <td> <center> <%= v.number_of_lhw_visited_compliance(Date.today.beginning_of_month-1.month) %> </center> </td>
       <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month-1.month) %> </center> </td>
     <% else %>
-      <% Visitor::NOT_USED_IN_MONITORING_COMPLIANCE.each do |type| %>
+      <% ['ChildHealth', 'HealthHouse', 'Maternal', 'Newborn', 'SpecialTask', 'SupportGroupMeeting', 'FpClient'].each do |type| %>
       <td> <center> <%= v.phone_entries.where(type: type, start_time: @time_filter..@time_filter.end_of_month).count %>
       </center> </td>
       <% end %>

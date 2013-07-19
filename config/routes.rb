@@ -37,7 +37,9 @@ Lhw::Application.routes.draw do
 			post :indicators_report_by_people
 		  get  :compliance_table
       get  :monitoring_compliance_table
+      post :monitoring_compliance_table
       get  :reporting_compliance_table
+      post :reporting_compliance_table
       post :compliance_table
       post :filter_for_compliance_table
     end
