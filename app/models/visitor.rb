@@ -28,7 +28,7 @@ class Visitor < ActiveRecord::Base
 
 # total forms for monitoring and reporting
 	def total_forms_count(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter) + total_form_submitted_used_for_reporting_compliance(time_filter)).round(2)
+		(total_form_submitted_used_for_monitoring_compliance(time_filter) + total_form_submitted_used_for_reporting_compliance(time_filter)).to_i
 	end
 
 	#total complaince monitoring + reporting
@@ -93,7 +93,7 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_f / 100.0).round(2)
+		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s)
 	end
 
 	# monitoring forms compliance

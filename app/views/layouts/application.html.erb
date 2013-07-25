@@ -13,11 +13,13 @@
 	<% end %>
   <%= csrf_meta_tags %>
 </head>
-<body id = "<%="#{controller_name}_controller"%>", class = "<%="#{action_name}_action"%>" >
+<body id = "<%="#{controller_name}_controller"%>", class = "<%="#{action_name}_action"%>">
 	<%= javascript_include_tag "application" %>
 
+	<%= image_tag "header.png", style: "margin-left: 60px;" %>
+
 	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
+		<div class="navbar-inner" style="margin: 0px 60px 0px 60px">
 			<div class="container">
 			
 			 <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
