@@ -15,6 +15,5 @@
 /tmp
 /.yardoc
 /public/system
-/public/assets
 /db/sql_fragments.txt
 /public/audios
