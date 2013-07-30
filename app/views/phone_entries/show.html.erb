@@ -77,6 +77,7 @@
 	<div class="span8">
 		<%= render :partial => 'entry_details', :locals => { :entry => @phone_entry } %>
 	</div>
+
 	<% if @entry_detail.attributes.has_key? "photo_url" %>
 	<div id="Modal2" class="modal hide fade">
 		<div class="modal-header">
