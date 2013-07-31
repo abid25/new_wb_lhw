@@ -18,7 +18,11 @@ include ActionView::Helpers::TextHelper
 			when "boolean"
 				entry.try(indicator.hook)==0 ? "No" : "Yes"
 			else
-				entry.try(indicator.hook)
+				if indicator.hook=="lhw_code" && LhwDetail.find_by_code("#{entry.try(indicator.hook)}").present?
+					LhwDetail.find_by_code("#{entry.try(indicator.hook)}").try(:name) + " " + LhwDetail.find_by_code("#{entry.try(indicator.hook)}").try(:father_name)
+				else
+					entry.try(indicator.hook)
+				end
 		end
 	end
 	
