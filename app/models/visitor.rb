@@ -96,19 +96,21 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		result = (time_filter.beginning_of_month..Date.today).to_a.select {|k| MY_DAYS.include?(k.wday)}
+		# binding.pry if self.designation == "FPO"
+		result          = (time_filter.to_date.beginning_of_month..Date.today).to_a.select {|k| MY_DAYS.include?(k.wday)}
+		forms_submitted = total_form_submitted_used_for_monitoring_compliance(time_filter)
 
 		if Date.today > 24
 			if self.designation == "LHS"
-				(total_form_submitted_used_for_monitoring_compliance(time_filter) / 100 * 100).round(2)
-			else
-				(total_form_submitted_used_for_monitoring_compliance(time_filter) / 54 * 100).round(2)
+				(forms_submitted / 100.0 * 100).round(2)
+			elsif self.designation == "FPO"
+				(forms_submitted / 54.0 * 100).round(2)
 			end
 		else
 			if self.designation == "LHS"
-				((total_form_submitted_used_for_monitoring_compliance(time_filter) / ((Date.today - result.size) * 5)) * 100).round(2)
-			else
-				((total_form_submitted_used_for_monitoring_compliance(time_filter) / ((Date.today - result.size) * 3)) * 100).round(2)
+				((forms_submitted / ((Date.today.day - result.size) * 5).to_f) * 100).round(2)
+			elsif self.designation == "FPO"
+				((forms_submitted / ((Date.today.day - result.size) * 3).to_f) * 100).round(2)
 			end
 		end
 	end
