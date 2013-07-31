@@ -26,7 +26,10 @@ class Visitor < ActiveRecord::Base
 	NOT_USED_IN_MONITORING_COMPLIANCE = ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment']
 	NOT_USED_IN_REPORTING_COMPLIANCE  = ['ChildHealth', 'HealthHouse', 'Maternal', 'Newborn', 'SpecialTask', 'SupportGroupMeeting', 'FpClient']
 
-# total forms for monitoring and reporting
+	# day of the week in 0-6. Sunday is day-of-week 0.
+	MY_DAYS = [0]
+
+	# total forms for monitoring and reporting
 	def total_forms_count(time_filter)
 		(total_form_submitted_used_for_monitoring_compliance(time_filter) + total_form_submitted_used_for_reporting_compliance(time_filter)).to_i
 	end
@@ -93,7 +96,21 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s)
+		result = (time_filter.beginning_of_month..Date.today).to_a.select {|k| MY_DAYS.include?(k.wday)}
+
+		if Date.today > 24
+			if self.designation == "LHS"
+				(total_form_submitted_used_for_monitoring_compliance(time_filter) / 100 * 100).round(2)
+			else
+				(total_form_submitted_used_for_monitoring_compliance(time_filter) / 54 * 100).round(2)
+			end
+		else
+			if self.designation == "LHS"
+				((total_form_submitted_used_for_monitoring_compliance(time_filter) / ((Date.today - result.size) * 5)) * 100).round(2)
+			else
+				((total_form_submitted_used_for_monitoring_compliance(time_filter) / ((Date.today - result.size) * 3)) * 100).round(2)
+			end
+		end
 	end
 
 	# monitoring forms compliance
