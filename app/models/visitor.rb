@@ -55,7 +55,7 @@ class Visitor < ActiveRecord::Base
 			days_in_field << entry.start_time.to_date
 		end
 
-		(days_in_field.uniq.count.to_f / 20.0).round(2)
+		(days_in_field.uniq.count.to_f / 20.0 * 100).round(2)
 	end
 
 	#  (no. of uniq LHWs visited) / 20 
