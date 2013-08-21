@@ -55,7 +55,7 @@ class Visitor < ActiveRecord::Base
 			days_in_field << entry.start_time.to_date
 		end
 
-		(days_in_field.uniq.count.to_f / 20.0 * 100).round(2)
+		(days_in_field.uniq.count.to_f / 20.0 * 100).round(2).to_s + "%"
 	end
 
 	#  (no. of uniq LHWs visited) / 20 
@@ -87,13 +87,29 @@ class Visitor < ActiveRecord::Base
 		lhw_visited.count.to_f / 20.0
 	end
 
+	def required_forms
+		if self.designation == "LHS"
+			"100"
+		else
+			"54"
+		end
+	end
+
+	def days_required
+		if self.designation == "LHS"
+			"20"
+		else
+			"24"
+		end
+	end
+
 	def phone_entries_with_time_filter(time_filter)
 		phone_entries.where(type: phone_entries.collect(&:type).uniq - Visitor::NOT_USED_IN_MONITORING_COMPLIANCE, start_time: time_filter..time_filter.end_of_month)
 	end
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s)
+		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s) + "%"
 	end
 
 	# monitoring forms compliance

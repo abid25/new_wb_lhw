@@ -1,18 +1,19 @@
 <%= medium_spinner_tag 'time_filter_spinner' %>
 <table cellpadding="0" cellspacing="0" border="1" class="table" id="district_compliance_table" style="border-collapse: separate;">
   <thead>
-    <tr>
+<!--     <tr>
       <th colspan="1"> <center> Visitors </center> </th>
       <th colspan="1"> <center> Forms Statistics </center> </th>
       <th colspan="1"> <center> Complaince Statistics </center></th>
       <th colspan="2"> <center> Attendance Statistics </center></th>
     </tr>
-    <tr>
+ -->    <tr>
       <th><center> Name                   </center> </th>
-      
+      <th><center> Forms Required  </center> </th>
       <th><center> Total Monitoring Forms </center> </th>
 
-      <th><center> Total Compliance   </center> </th>
+      <th><center> Compliance Percentage </center> </th>
+      <th><center> Required Days in Field </center> </th>
       <th> <center> Number of days in field </center> </th>
       <th> <center> Attendance Percentage </center> </th>
     </tr> 
@@ -23,16 +24,20 @@
       <td> <center> <%= link_to v.name, compliance_report_user_path(v) %> </center> </td>
 
       <% if @time_filter.blank? %>
+        <td> <center> <%= v.required_forms %> </center> </td>
         <td>
           <center>
            <%= v.total_form_submitted_used_for_monitoring_compliance(Date.today.beginning_of_month - 1.month) %>
           </center>
         </td>
 
+        
         <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <td> <center> <%= v.days_required  %> </center> </td>
         <td> <center> <%= v.number_of_unique_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
         <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
       <% else %>
+        <td> <center> <%= v.required_forms %> </center> </td>
         <td>
           <center>
             <%= v.total_form_submitted_used_for_monitoring_compliance(@time_filter) %>
@@ -40,6 +45,7 @@
         </td>
 
         <td> <center> <%= v.total_monitoring_compliance(@time_filter) %> </center> </td>
+        <td> <center> <%= v.days_required  %> </center> </td>
         <td> <center> <%= v.number_of_unique_days_in_field(@time_filter) %> </center> </td>
         <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
       <% end %>

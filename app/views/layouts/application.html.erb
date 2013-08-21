@@ -41,14 +41,14 @@
 				</a>
 						<ul class="dropdown-menu">
 						  <li>
-						  	<%= link_to "Total Compliance", compliance_table_district_path(District.find(5)) %>
+						  	<%= link_to "Compliance Percentage", compliance_table_district_path(District.find(5)) %>
 						  </li>
 						  <li class="divider"></li>
 							<li>
-								<%= link_to "Monitoring Compliance", monitoring_compliance_table_district_path(District.find(5)) %>
+								<%= link_to "Monitoring Summary", monitoring_compliance_table_district_path(District.find(5)) %>
 							</li>
 							<li>
-								<%= link_to "Reporting Compliance", reporting_compliance_table_district_path(District.find(5)) %>
+								<%= link_to "Reporting Summary", reporting_compliance_table_district_path(District.find(5)) %>
 							</li>
 						</ul>
 				</li>
@@ -139,7 +139,15 @@
 			  </li>
 			  <% end %>
 
-			  <li> <%= link_to destroy_user_session_path, :method => :delete do%> <i class="icon-off icon-white"></i> <%="Logout ("+current_user.username+")"%> <% end%></li>
+			  <li>
+			  	<%= link_to 'http://lhwp.punjab.gov.pk/Application/Reports/LHW_Reports.aspx?MenuBox=0', target: "_blank" do%>
+			  		<i class="icon-white">
+			  			LHWWebsite
+			  		</i>
+			  	<% end %> 
+			  </li>
+
+			  <li style="margin-left: 50px"> <%= link_to destroy_user_session_path, :method => :delete do%> <i class="icon-off icon-white"></i> <%="Logout ("+current_user.username+")"%> <% end%></li>
 			  <% end %>
 			</ul>
 			</div>
