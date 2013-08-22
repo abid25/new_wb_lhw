@@ -25,7 +25,7 @@ module ComplianceReportsHelper
 		data_table.new_column('number', 'Total Compliance %')
 
 		for unit in collection
-			if session[:start_time]
+			if session[:start_time].present?
 				data_table.add_row([unit.name.titleize, unit.total_monitoring_compliance(@start_time).to_f ])
 			else
 				data_table.add_row([unit.name.titleize, unit.total_monitoring_compliance(Date.today.beginning_of_month - 1.month).to_f ])
