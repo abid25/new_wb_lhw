@@ -25,7 +25,11 @@ module ComplianceReportsHelper
 		data_table.new_column('number', 'Total Compliance %')
 
 		for unit in collection
-			data_table.add_row([unit.name.titleize, unit.total_percentage])
+			if session[:start_time]
+				data_table.add_row([unit.name.titleize, unit.total_monitoring_compliance(@start_time).to_f ])
+			else
+				data_table.add_row([unit.name.titleize, unit.total_monitoring_compliance(Date.today.beginning_of_month - 1.month).to_f ])
+			end
 		end
 
 		opts   = {:height=> height ,:chartArea=> {:top => 5, :height=> "95%"}, :animation => {:duration => '2000', :easing => 'inAndOut'},:hAxis => {:viewWindowMode=> 'explicit',:viewWindow=>{:max=>100, :min=>-10},:minvalue => 0, :maxValue => 100}}

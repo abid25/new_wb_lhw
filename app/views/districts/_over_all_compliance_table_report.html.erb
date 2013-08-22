@@ -32,7 +32,7 @@
         </td>
 
         
-        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) + "%" %> </center> </td>
         <td> <center> <%= v.days_required  %> </center> </td>
         <td> <center> <%= v.number_of_unique_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
         <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>

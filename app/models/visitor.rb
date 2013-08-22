@@ -109,7 +109,7 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s) + "%"
+		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s)
 	end
 
 	# monitoring forms compliance
