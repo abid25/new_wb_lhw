@@ -3,23 +3,22 @@
   <thead>
     <tr>
       <th colspan="2"> <center> Visitors </center> </th>
-      <th colspan="7"> <center> Monitoring Forms </center> </th>
+      <th colspan="7"> <center> Reporting Forms </center> </th>
       <th colspan="1"> <center> Visits Performed </center></th>
-      <th colspan="3"> <center> Compliance </center></th>
+      <th colspan="2"> <center> Compliance </center></th>
     </tr>
     <tr>
       <th>Name</th>
       <th><center> No. of LHW's                </center> </th>
-      <th><center> Reporting Child Health      </center> </th>
-      <th><center> Reporting Maternal Health   </center> </th>
-      <th><center> Reporting Community Meeting </center> </th>
-      <th><center> Reporting Family Planning   </center> </th>
-      <th><center> Reporting Facility         </center> </th>
-      <th><center> Reporting Birth Death        </center> </th>
-      <th><center> Reporting Treatment         </center> </th>
+      <th><center> Child Health      </center> </th>
+      <th><center> Maternal Health   </center> </th>
+      <th><center> Community Meeting </center> </th>
+      <th><center> Family Planning   </center> </th>
+      <th><center> Facility         </center> </th>
+      <th><center> Birth/Death        </center> </th>
+      <th><center> Treatment         </center> </th>
       <th><center> Total                       </center> </th>
       <th><center> Form                </center> </th>
-      <th> <center> LHW's Visited        </center></th>
       <th> <center> Attendance     </center></th>
     </tr> 
   </thead>
@@ -36,7 +35,6 @@
 
       <td> <center> <%= v.total_form_submitted_used_for_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
       <td> <center> <%= v.total_form_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
-      <td> <center> <%= v.number_of_lhw_visited_compliance(Date.today.beginning_of_month) %> </center> </td>
       <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month) %> </center> </td>
     <% else %>
       <% ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment'].each do |type| %>
@@ -46,7 +44,6 @@
 
       <td> <center> <%= v.total_form_submitted_used_for_reporting_compliance(@time_filter) %> </center> </td>
       <td> <center> <%= v.total_form_reporting_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.number_of_lhw_visited_compliance(@time_filter) %> </center> </td>
       <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
     <% end %>
   </tr>

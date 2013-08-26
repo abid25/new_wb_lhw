@@ -5,7 +5,7 @@
       <th colspan="2"> <center> Visitors </center> </th>
       <th colspan="7"> <center> Monitoring Forms </center> </th>
       <th colspan="1"> <center> Visits Performed </center></th>
-      <th colspan="3"> <center> Compliance </center></th>
+      <th colspan="2"> <center> Compliance </center></th>
     </tr>
     <tr>
       <th>Name</th>
@@ -19,7 +19,6 @@
       <th><center> Special Task         </center> </th>
       <th><center> Total               </center> </th>
       <th><center> Form                </center> </th>
-      <th> <center> LHW's Visited        </center></th>
       <th> <center> Attendance     </center></th>
     </tr> 
   </thead>
@@ -35,9 +34,22 @@
       <% end %>
 
       <td> <center> <%= v.total_form_submitted_used_for_monitoring_compliance(Date.today.beginning_of_month-1.month) %> </center> </td>
-      <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month-1.month) %> </center> </td>
-      <td> <center> <%= v.number_of_lhw_visited_compliance(Date.today.beginning_of_month-1.month) %> </center> </td>
-      <td> <center> <%= v.number_of_unique_days_in_field(Date.today.beginning_of_month-1.month) %> </center> </td>
+        
+
+      <% @compliance = v.total_monitoring_compliance(Date.today.beginning_of_month-1.month) %>
+      <% if @compliance < 50 %>
+        <td style="background-color: red" > <center> <%= @compliance %> </center> </td>
+      <% else %>
+        <td> <center> <%= @compliance %> </center> </td>
+      <% end %>
+
+      <% @uniqe_days = v.number_of_unique_days_in_field(Date.today.beginning_of_month-1.month) %>
+      <% if @uniqe_days < 50 %>
+        <td style="background-color: red"> <center> <%= @uniqe_days %> </center> </td>
+      <% else %>
+        <td> <center> <%= @uniqe_days %> </center> </td>
+      <% end %>
+
     <% else %>
       <% ['ChildHealth', 'HealthHouse', 'Maternal', 'Newborn', 'SpecialTask', 'SupportGroupMeeting', 'FpClient'].each do |type| %>
       <td> <center> <%= v.phone_entries.where(type: type, start_time: @time_filter..@time_filter.end_of_month).count %>
@@ -45,9 +57,20 @@
       <% end %>
 
       <td> <center> <%= v.total_form_submitted_used_for_monitoring_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.total_monitoring_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.number_of_lhw_visited_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.number_of_unique_days_in_field(@time_filter) %> </center> </td>
+    
+      <% @compliance = total_monitoring_compliance(@time_filter) %>
+      <% if @compliance < 50 %>
+        <td style="background-color: red" > <center> <%= @compliance %> </center> </td>
+      <% else %>
+        <td> <center> <%= @compliance %> </center> </td>
+      <% end %>
+
+      <% @uniqe_days = v.number_of_unique_days_in_field(@time_filter) %>
+      <% if @uniqe_days < 50 %>
+        <td style="background-color: red"> <center> <%= @uniqe_days %> </center> </td>
+      <% else %>
+        <td> <center> <%= @uniqe_days %> </center> </td>
+      <% end %>
     <% end %>
   </tr>
   <% end %>
