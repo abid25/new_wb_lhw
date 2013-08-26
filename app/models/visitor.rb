@@ -55,7 +55,7 @@ class Visitor < ActiveRecord::Base
 			days_in_field << entry.start_time.to_date
 		end
 
-		(days_in_field.uniq.count.to_f / 20.0 * 100).round(2).to_s + "%"
+		(days_in_field.uniq.count.to_f / 20.0 * 100).round(2)
 	end
 
 	#  (no. of uniq LHWs visited) / 20 
@@ -109,7 +109,7 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		(total_form_submitted_used_for_monitoring_compliance(time_filter).to_s)
+		total_form_submitted_used_for_monitoring_compliance(time_filter)
 	end
 
 	# monitoring forms compliance

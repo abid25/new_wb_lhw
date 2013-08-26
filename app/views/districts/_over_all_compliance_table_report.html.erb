@@ -31,11 +31,22 @@
           </center>
         </td>
 
-        
-        <td> <center> <%= v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) + "%" %> </center> </td>
+        <% @compliance_percentage = v.total_monitoring_compliance(Date.today.beginning_of_month - 1.month) %>
+        <% if @compliance_percentage < 50 %>
+          <td style="background-color: red"> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
+        <% else %>
+          <td> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
+        <% end %>
+
         <td> <center> <%= v.days_required  %> </center> </td>
         <td> <center> <%= v.number_of_unique_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
-        <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month - 1.month) %> </center> </td>
+        <% @attendance_percentage = v.number_of_days_in_field(Date.today.beginning_of_month - 1.month) %>
+        
+        <% if @attendance_percentage < 50 %>
+          <td style="background-color: red"> <center> <%= @attendance_percentage.to_s + "%" %> </center> </td>
+        <% else %>
+          <td> <center> <%= @attendance_percentage.to_s + "%" %> </center> </td>
+        <% end %>
       <% else %>
         <td> <center> <%= v.required_forms %> </center> </td>
         <td>
@@ -44,10 +55,22 @@
           </center>
         </td>
 
-        <td> <center> <%= v.total_monitoring_compliance(@time_filter) %> </center> </td>
+        <% @compliance_percentage = v.total_monitoring_compliance(@time_filter) %>
+        <% if @compliance_percentage < 50 %>
+          <td style="background-color: red"> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
+        <% else %>
+          <td> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
+        <% end %>
+
         <td> <center> <%= v.days_required  %> </center> </td>
         <td> <center> <%= v.number_of_unique_days_in_field(@time_filter) %> </center> </td>
-        <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
+        <% @attendance_percentage = v.number_of_days_in_field(@time_filter) %>
+
+        <% if @attendance_percentage < 50 %>
+          <td style="background-color: red"> <center> <%= @attendance_percentage.to_s + "%" %> </center> </td>
+        <% else %>
+          <td> <center> <%= @attendance_percentage.to_s + "%" %> </center> </td>
+        <% end %>
       <% end %>
     </tr>
   <% end %>
