@@ -37,10 +37,10 @@ if ($('#districts_controller').length)
 				} 
 			); 
 		
-			Gmaps.map.callback = function() 
-			{			  
-				create_entries_legend();
-			}
+			// Gmaps.map.callback = function() 
+			// {			  
+			// 	create_entries_legend();
+			// }
 			
 			
 			preloading_functions[current_visualization_type]();

@@ -9,7 +9,7 @@
 			:order => [:month, :year], :default=> @start_time, :input_html => { :class => "span2" } %> 
 		</div>
 
-			<% if ((params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" ) && params[:controller]=="districts") %>
+			<% if ((params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" || params[:action] == "compliance_report" ) && params[:controller]=="districts") %>
 				<div class="span3">
 				<%= f.select :designation, [["LHS", "LHS"], ["FPO", "FPO"]] %>
 				</div>
