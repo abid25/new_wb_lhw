@@ -16,20 +16,14 @@ class DistrictsController < ApplicationController
 
 		unless @district.nil?	
 			authorize! :view_indicators_reports, @district
-			@number_of_months = (@end_time.year*12+@end_time.month) - (@start_time.year*12+@start_time.month) + 1
-
-			@province = Province.find(1)
-			@province.compliance_statistics(@end_time)
-			@district.compliance_statistics(@end_time)
 			@officers = @district.visitors
-			@district.officers_with_compliance_statistics(@start_time,@end_time,@number_of_months,@officers)
-			@officers.sort! { |p1, p2| p2.total_percentage <=> p1.total_percentage }
+			
+			@final_array = []
 
-			@phone_entries = @district.phone_entries.includes(:visitor).where(:start_time=>(@start_time..@end_time.end_of_day))
-			@boundaries = District.get_boundaries(@district)
+			@officers.each do |officer|
+				@final_array << [ officer.name, officer.total_monitoring_compliance(@start_time), officer.number_of_days_in_field(@start_time) ]
+			end
 
-			define_activity_legend
-			define_details_images
 			respond_to do |format| # why the hell do i need to pull a request.xhr check here...?
 				if request.xhr?
 					format.js (render 'compliance_report.js.erb')
