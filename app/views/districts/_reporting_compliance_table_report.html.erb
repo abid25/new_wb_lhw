@@ -1,11 +1,11 @@
 <%= medium_spinner_tag 'time_filter_spinner' %>
-<table cellpadding="0" cellspacing="0" border="1" class="table" id="district_compliance_table">
+<table cellpadding="0" cellspacing="0" border="1" class="table" id="district_compliance_table" style="border-collapse: separate;">
   <thead>
     <tr>
       <th colspan="2"> <center> Visitors </center> </th>
       <th colspan="7"> <center> Reporting Forms </center> </th>
-      <th colspan="1"> <center> Visits Performed </center></th>
-      <th colspan="2"> <center> Compliance </center></th>
+      <th colspan="1"> <center> Total Number of Forms </center></th>
+      <th colspan="2"> <center> Compliance Percentage </center></th>
     </tr>
     <tr>
       <th>Name</th>
@@ -34,8 +34,22 @@
       <% end %>
 
       <td> <center> <%= v.total_form_submitted_used_for_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
-      <td> <center> <%= v.total_form_reporting_compliance(Date.today.beginning_of_month) %> </center> </td>
-      <td> <center> <%= v.number_of_days_in_field(Date.today.beginning_of_month) %> </center> </td>
+    
+      <% @compliance = v.total_form_reporting_compliance(Date.today.beginning_of_month) %>
+
+      <% if @compliance < 50 %>
+        <td style="color: red" > <center> <%= @compliance.to_s + "%" %> </center> </td>
+      <% else %>
+        <td> <center> <%= @compliance.to_s + "%" %> </center> </td>
+      <% end %>
+
+      <% @attendance = v.number_of_days_in_field(Date.today.beginning_of_month) %>
+
+      <% if @attendance < 50 %>
+        <td style="color: red" > <center> <%= @attendance.to_s + "%" %> </center> </td>
+      <% else %>
+        <td> <center> <%= @attendance.to_s + "%" %> </center> </td>
+      <% end %>
     <% else %>
       <% ['ReportingCommunityMeeting', 'ReportingFacility', 'ReportingBirthDeath', 'ReportingChildHealth', 'ReportingFamilyPlanning', 'ReportingMaternalHealth', 'ReportingTreatment'].each do |type| %>
       <td> <center> <%= v.phone_entries.where(type: type, start_time: @time_filter..@time_filter.end_of_month).count %>
@@ -43,8 +57,20 @@
       <% end %>
 
       <td> <center> <%= v.total_form_submitted_used_for_reporting_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.total_form_reporting_compliance(@time_filter) %> </center> </td>
-      <td> <center> <%= v.number_of_days_in_field(@time_filter) %> </center> </td>
+      
+      <% @compliance = v.total_form_reporting_compliance(@time_filter) %>
+      <% if @compliance < 50 %>
+        <td style="color: red" > <center> <%= @compliance %> </center> </td>
+      <% else %>
+        <td> <center> <%= @compliance %> </center> </td>
+      <% end %>
+
+      <% @attendance = v.number_of_days_in_field(@time_filter) %>
+      <% if @attendance < 50 %>
+        <td style="color: red"> <center> <%= @attendance %> </center> </td>
+      <% else %>
+        <td> <center> <%= @attendance %> </center> </td>
+      <% end %>
     <% end %>
   </tr>
   <% end %>

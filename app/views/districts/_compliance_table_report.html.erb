@@ -4,8 +4,8 @@
     <tr>
       <th colspan="2"> <center> Visitors </center> </th>
       <th colspan="7"> <center> Monitoring Forms </center> </th>
-      <th colspan="1"> <center> Visits Performed </center></th>
-      <th colspan="2"> <center> Compliance </center></th>
+      <th colspan="1"> <center> Total Number of Forms </center></th>
+      <th colspan="2"> <center> Compliance Percentage</center></th>
     </tr>
     <tr>
       <th>Name</th>
@@ -38,16 +38,16 @@
 
       <% @compliance = v.total_monitoring_compliance(Date.today.beginning_of_month-1.month) %>
       <% if @compliance < 50 %>
-        <td style="background-color: red" > <center> <%= @compliance %> </center> </td>
+        <td style="color: red" > <center> <%= @compliance.to_s + "%" %> </center> </td>
       <% else %>
-        <td> <center> <%= @compliance %> </center> </td>
+        <td> <center> <%= @compliance.to_s + "%" %> </center> </td>
       <% end %>
 
       <% @uniqe_days = v.number_of_days_in_field(Date.today.beginning_of_month-1.month) %>
       <% if @uniqe_days < 50 %>
-        <td style="background-color: red"> <center> <%= @uniqe_days %> </center> </td>
+        <td style="color: red"> <center> <%= @uniqe_days.to_s + "%" %> </center> </td>
       <% else %>
-        <td> <center> <%= @uniqe_days %> </center> </td>
+        <td> <center> <%= @uniqe_days.to_s + "%" %> </center> </td>
       <% end %>
 
     <% else %>
@@ -60,16 +60,16 @@
     
       <% @compliance = total_monitoring_compliance(@time_filter) %>
       <% if @compliance < 50 %>
-        <td style="background-color: red" > <center> <%= @compliance %> </center> </td>
+        <td style="color: red" > <center> <%= @compliance.to_s + "%" %> </center> </td>
       <% else %>
-        <td> <center> <%= @compliance %> </center> </td>
+        <td> <center> <%= @compliance.to_s + "%" %> </center> </td>
       <% end %>
 
       <% @uniqe_days = v.number_of_days_in_field(@time_filter) %>
       <% if @uniqe_days < 50 %>
-        <td style="background-color: red"> <center> <%= @uniqe_days %> </center> </td>
+        <td style="color: red"> <center> <%= @uniqe_days.to_s + "%" %> </center> </td>
       <% else %>
-        <td> <center> <%= @uniqe_days %> </center> </td>
+        <td> <center> <%= @uniqe_days.to_s + "%" %> </center> </td>
       <% end %>
     <% end %>
   </tr>
