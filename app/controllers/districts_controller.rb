@@ -18,7 +18,7 @@ class DistrictsController < ApplicationController
 			authorize! :view_indicators_reports, @district
 			@officers = @district.visitors
 			
-			@final_array = ["Visitor", "Form Percentage", "Attendance Percentage"]
+			@final_array = [["Visitor", "Form Percentage", "Attendance Percentage"]]
 
 			@officers.each do |officer|
 				@final_array << [ officer.name, officer.total_monitoring_compliance(@start_time), officer.number_of_days_in_field(@start_time) ]
