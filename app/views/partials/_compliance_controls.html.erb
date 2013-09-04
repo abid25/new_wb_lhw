@@ -16,7 +16,7 @@
 			<% end %>
 		<% end %>
 
-		<% unless (params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" ) %>
+		<% unless (params[:action]=="monitoring_compliance_table" || params[:action]=="reporting_compliance_table" || params[:action]=="compliance_table" || params[:action]=="compliance_report" ) %>
 		<div class="span8">
 			<%= medium_spinner_tag 'time_filter_spinner' %>
 			

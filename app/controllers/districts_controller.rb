@@ -12,11 +12,16 @@ class DistrictsController < ApplicationController
 			@district = District.find(params[:time_filter][:id])
 			@start_time = Time.zone.parse(params[:time_filter]["start_time(3i)"]+"-"+params[:time_filter]["start_time(2i)"]+"-"+params[:time_filter]["start_time(1i)"])
 			@end_time = @start_time.end_of_month
-		end	
+		end
 
 		unless @district.nil?	
 			authorize! :view_indicators_reports, @district
-			@officers = @district.visitors
+			
+			@officers = if params[:time_filter].present? && params[:time_filter][:designation].present?
+										Visitor.where(designation: params[:time_filter][:designation].to_s)
+									else
+										Visitor.where(designation: "LHS")
+									end
 			
 			@final_array = [["Visitor", "Form Percentage", "Attendance Percentage"]]
 

@@ -1,0 +1,18 @@
+google.load("visualization", "1", {packages:["corechart"]});
+// google.setOnLoadCallback(drawChart);
+$(function() {
+	drawChart();
+});
+
+function drawChart() {
+	var test = <%= raw JSON.parse(@final_array.to_json) %>;
+	var data = google.visualization.arrayToDataTable(test);
+
+	var options = {
+		title: 'Graph',
+		vAxis: {title: 'Visitors',  titleTextStyle: {color: 'red'}}
+	};
+
+	var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+}
