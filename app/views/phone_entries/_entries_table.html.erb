@@ -3,7 +3,7 @@
 	<tr>
 		<th> <center> Status </center></th>
 		<th> <center> Name </center></th>
-		<th> <center> District </center></th>
+		<th> <center> Address </center></th>
 		<th> <center> Activity Conducted </center></th>
 		<th style="display:none;"> Conducted On sorter</th>
 		<th style="display:none;"> Received On sorter</th>
@@ -17,7 +17,7 @@
 						<tr>
 						<td class="center"><%= raw generate_entry_status(phone_entry.validate_entry(500))%></td>
 						<td class="center"><%= phone_entry.visitor ? phone_entry.visitor.name : "Unknown" %> </td>
-						<td class="center"><%= phone_entry.visitor ? phone_entry.visitor.district.name.titleize : "Unknown" %></td>
+						<td class="center"><%= phone_entry.address ? phone_entry.address : "Unknown" %></td>
 						<td class="center"><%= phone_entry.detail.class %> </td>
 						<td class="center" style="display:none;"><%= phone_entry.start_time%></td>
 						<td class="center" style="display:none;"><%= phone_entry.meta_submission_date %> </td>
