@@ -109,7 +109,11 @@ class Visitor < ActiveRecord::Base
 
 	# monitoring forms compliance
 	def total_monitoring_compliance(time_filter)
-		total_form_submitted_used_for_monitoring_compliance(time_filter)
+		if self.designation == "LHS"
+			total_form_submitted_used_for_monitoring_compliance(time_filter)
+		else
+			(total_form_submitted_used_for_monitoring_compliance(time_filter) / 54.to_f) * 100
+		end
 	end
 
 	# monitoring forms compliance
