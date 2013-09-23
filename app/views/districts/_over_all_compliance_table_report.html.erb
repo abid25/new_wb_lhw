@@ -57,7 +57,7 @@
 
         <% @compliance_percentage = v.total_monitoring_compliance(@time_filter) %>
         <% if @compliance_percentage < 50 %>
-          <td style="background-color: red"> <center> <%= @compliance_percentage.round(2).to_s + "%" %> </center> </td>
+          <td style="background-color: red"> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
         <% else %>
           <td> <center> <%= @compliance_percentage.to_s + "%" %> </center> </td>
         <% end %>
