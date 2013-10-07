@@ -35,7 +35,11 @@ class PhoneEntry < ActiveRecord::Base
 	belongs_to :visitor, :primary_key => :device_id, :foreign_key => :device_id
 	scope :counts_for_compliance, where("type NOT IN (?)", ["Newborn"])	
 	acts_as_gmappable :lat => 'location_y', :lng => 'location_x', :process_geocoding => false
-	reverse_geocoded_by 'location_y', 'location_x'
+	
+	reverse_geocoded_by :location_y, :location_x do |obj,results|
+	  obj.address = geo.route +", " geo.sub_state"," + geo.country if geo = results.first
+	end
+	
 	after_validation :reverse_geocode
 	
 =begin
