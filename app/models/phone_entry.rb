@@ -38,7 +38,7 @@ class PhoneEntry < ActiveRecord::Base
 	
 	reverse_geocoded_by :location_y, :location_x do |obj,results|
 		if geo = results.first
-	  	obj.address = geo.route +", " geo.sub_state"," + geo.country
+	  	obj.address = geo.route +", "+geo.sub_state+"," + geo.country
 	  end
 	end
 	
