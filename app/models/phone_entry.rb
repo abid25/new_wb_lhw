@@ -37,7 +37,9 @@ class PhoneEntry < ActiveRecord::Base
 	acts_as_gmappable :lat => 'location_y', :lng => 'location_x', :process_geocoding => false
 	
 	reverse_geocoded_by :location_y, :location_x do |obj,results|
-	  obj.address = geo.route +", " geo.sub_state"," + geo.country if geo = results.first
+		if geo = results.first
+	  	obj.address = geo.route +", " geo.sub_state"," + geo.country
+	  end
 	end
 	
 	after_validation :reverse_geocode
