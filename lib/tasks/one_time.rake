@@ -10,7 +10,7 @@ namespace :one_time do
 				total = v.phone_entries.where(meta_submission_date: (Date.today - 1.day).beginning_of_day..Date.today.end_of_day)
 				if total.present?
 					v.phone_entries.where(meta_submission_date: (Date.today - 1.day).beginning_of_day..Date.today.end_of_day).each do |entry|
-						csv << [v.name, total.count, entry.address].flatten
+						csv << [v.name, total.count, entry.address,entry.meta_submission_date].flatten
 					end
 				end
 			end
