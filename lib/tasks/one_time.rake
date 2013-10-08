@@ -7,7 +7,8 @@ namespace :one_time do
 			csv << %w[Name forms_sent location]
 
 			Visitor.where(designation: "FPO").each do |v|
-				if total = v.phone_entries.where(meta_submission_date: (Date.today - 1.day).beginning_of_day..Date.today.end_of_day).present?
+				total = v.phone_entries.where(meta_submission_date: (Date.today - 1.day).beginning_of_day..Date.today.end_of_day)
+				if total.present?
 					v.phone_entries.where(meta_submission_date: (Date.today - 1.day).beginning_of_day..Date.today.end_of_day).each do |entry|
 						csv << [v.name, total.count, v.address].flatten
 					end
