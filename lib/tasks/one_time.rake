@@ -21,7 +21,7 @@ namespace :one_time do
 
 	desc "FPO's entry saving"
 	task :fpo_save_entry => :environment do
-		(6..9).each do |month_num| do
+		(6..9).each do |month_num|
 			Visitor.where(designation: "FPO").each do |v|
 				v.phone_entries.where(meta_submission_date: Date.parse("01-#{month_num}-2013").beginning_of_day..Date.parse("01-#{month_num}-2013").end_of_day).each do |entry|
 					entry.save
