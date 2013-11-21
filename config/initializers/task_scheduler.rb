@@ -24,7 +24,7 @@
 #  		ReportingChildHealth.import_data
 # 		ReportingFamilyPlanning.import_data 
 # 		ReportingMaternalHealth.import_data
-#         ReportingTreatment.import_data
+#     ReportingTreatment.import_data
 		
 # 		fp_lock = 1 #release the lock
 # 	else
