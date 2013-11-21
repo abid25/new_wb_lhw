@@ -40,8 +40,6 @@ namespace :one_time do
 					CSV.open("testing/#{v.name.delete(' ')}_#{Date::MONTHNAMES[month_num]}.csv", 'wb') do |csv|
 						csv << %w[Name forms_sent location date]
 
-						binding.pry
-
 						(1..Time.days_in_month(month_num, 2013)).each do |day_num|
 							if(v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).present?)
 
