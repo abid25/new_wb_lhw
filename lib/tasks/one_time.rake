@@ -35,7 +35,7 @@ namespace :one_time do
 		(1..11).each do |month_num|
 			Visitor.where(designation: "FPO").each do |v|
 
-				CSV.open("testing/#{v.name.delete(' ')}_#{month_num}.csv", 'wb') do |csv|
+				CSV.open("testing/#{v.name.delete(' ')}_#{Date::MONTHNAMES[month_num]}.csv", 'wb') do |csv|
 					csv << %w[Name forms_sent location date]
 
 					(1..Time.days_in_month(month_num, 2013)).each do |day_num|
