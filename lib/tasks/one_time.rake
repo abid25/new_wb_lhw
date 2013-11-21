@@ -32,7 +32,7 @@ namespace :one_time do
 
 	desc "FPO's report for 2013"
 	task :fpo_reports_2013 => :environment do
-		(1..11).each do |month_num|
+		(6..11).each do |month_num|
 			Visitor.where(designation: "FPO").each do |v|
 
 				CSV.open("testing/#{v.name.delete(' ')}_#{Date::MONTHNAMES[month_num]}.csv", 'wb') do |csv|
