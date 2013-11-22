@@ -38,10 +38,13 @@ namespace :one_time do
 					csv << %w[Name forms_sent location date]
 
 					(1..Time.days_in_month(month_num, 2013)).each do |day_num|
-						csv << [v.name, v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).count,
-							v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).last.address,
-							Date.parse("#{day_num}-#{month_num}-2013")														
-						]
+						if(v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).present?)
+
+							csv << [v.name, v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).count,
+								v.phone_entries.where(meta_submission_date: Date.parse("#{day_num}-#{month_num}-2013").beginning_of_day..Date.parse("#{day_num}-#{month_num}-2013").end_of_day).last.address,
+								Date.parse("#{day_num}-#{month_num}-2013")														
+							]
+						end
 					end
 				end
 			end
